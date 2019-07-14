@@ -1,0 +1,27 @@
+{
+  "groups": [
+    {
+      "name": "http-client",
+      "type": "com.wzx.lagou.config.MyConfig",
+      "sourceType": "com.wzx.lagou.config.MyConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "http-client.cookie",
+      "type": "java.lang.String",
+      "sourceType": "com.wzx.lagou.config.MyConfig"
+    },
+    {
+      "name": "http-client.referer",
+      "type": "java.lang.String",
+      "sourceType": "com.wzx.lagou.config.MyConfig"
+    },
+    {
+      "name": "http-client.user-agent",
+      "type": "java.lang.String",
+      "sourceType": "com.wzx.lagou.config.MyConfig"
+    }
+  ],
+  "hints": []
+}

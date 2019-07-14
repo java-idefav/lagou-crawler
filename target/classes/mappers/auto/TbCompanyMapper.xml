@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzx.lagou.repository.auto.TbCompanyMapper">
+  <resultMap id="BaseResultMap" type="com.wzx.lagou.model.auto.TbCompany">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="approve" jdbcType="INTEGER" property="approve" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="city_score" jdbcType="INTEGER" property="cityScore" />
+    <result column="company_combine_score" jdbcType="DOUBLE" property="companyCombineScore" />
+    <result column="company_features" jdbcType="VARCHAR" property="companyFeatures" />
+    <result column="company_full_name" jdbcType="VARCHAR" property="companyFullName" />
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="company_logo" jdbcType="VARCHAR" property="companyLogo" />
+    <result column="company_short_name" jdbcType="VARCHAR" property="companyShortName" />
+    <result column="company_size" jdbcType="VARCHAR" property="companySize" />
+    <result column="country_score" jdbcType="INTEGER" property="countryScore" />
+    <result column="finance_stage" jdbcType="VARCHAR" property="financeStage" />
+    <result column="industry_field" jdbcType="VARCHAR" property="industryField" />
+    <result column="interview_remark_num" jdbcType="INTEGER" property="interviewRemarkNum" />
+    <result column="is_has_valid_position" jdbcType="VARCHAR" property="isHasValidPosition" />
+    <result column="match_position_count" jdbcType="INTEGER" property="matchPositionCount" />
+    <result column="match_score" jdbcType="DOUBLE" property="matchScore" />
+    <result column="other_label" jdbcType="VARCHAR" property="otherLabel" />
+    <result column="position_num" jdbcType="INTEGER" property="positionNum" />
+    <result column="process_rate" jdbcType="INTEGER" property="processRate" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, approve, city, city_score, company_combine_score, company_features, company_full_name, 
+    company_id, company_logo, company_short_name, company_size, country_score, finance_stage, 
+    industry_field, interview_remark_num, is_has_valid_position, match_position_count, 
+    match_score, other_label, position_num, process_rate, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.wzx.lagou.model.auto.TbCompanyExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_company
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_company
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_company
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.wzx.lagou.model.auto.TbCompanyExample">
+    delete from tb_company
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wzx.lagou.model.auto.TbCompany">
+    insert into tb_company (id, approve, city, 
+      city_score, company_combine_score, company_features, 
+      company_full_name, company_id, company_logo, 
+      company_short_name, company_size, country_score, 
+      finance_stage, industry_field, interview_remark_num, 
+      is_has_valid_position, match_position_count, 
+      match_score, other_label, position_num, 
+      process_rate, update_time)
+    values (#{id,jdbcType=INTEGER}, #{approve,jdbcType=INTEGER}, #{city,jdbcType=VARCHAR}, 
+      #{cityScore,jdbcType=INTEGER}, #{companyCombineScore,jdbcType=DOUBLE}, #{companyFeatures,jdbcType=VARCHAR}, 
+      #{companyFullName,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, #{companyLogo,jdbcType=VARCHAR}, 
+      #{companyShortName,jdbcType=VARCHAR}, #{companySize,jdbcType=VARCHAR}, #{countryScore,jdbcType=INTEGER}, 
+      #{financeStage,jdbcType=VARCHAR}, #{industryField,jdbcType=VARCHAR}, #{interviewRemarkNum,jdbcType=INTEGER}, 
+      #{isHasValidPosition,jdbcType=VARCHAR}, #{matchPositionCount,jdbcType=INTEGER}, 
+      #{matchScore,jdbcType=DOUBLE}, #{otherLabel,jdbcType=VARCHAR}, #{positionNum,jdbcType=INTEGER}, 
+      #{processRate,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wzx.lagou.model.auto.TbCompany">
+    insert into tb_company
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="approve != null">
+        approve,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="cityScore != null">
+        city_score,
+      </if>
+      <if test="companyCombineScore != null">
+        company_combine_score,
+      </if>
+      <if test="companyFeatures != null">
+        company_features,
+      </if>
+      <if test="companyFullName != null">
+        company_full_name,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="companyLogo != null">
+        company_logo,
+      </if>
+      <if test="companyShortName != null">
+        company_short_name,
+      </if>
+      <if test="companySize != null">
+        company_size,
+      </if>
+      <if test="countryScore != null">
+        country_score,
+      </if>
+      <if test="financeStage != null">
+        finance_stage,
+      </if>
+      <if test="industryField != null">
+        industry_field,
+      </if>
+      <if test="interviewRemarkNum != null">
+        interview_remark_num,
+      </if>
+      <if test="isHasValidPosition != null">
+        is_has_valid_position,
+      </if>
+      <if test="matchPositionCount != null">
+        match_position_count,
+      </if>
+      <if test="matchScore != null">
+        match_score,
+      </if>
+      <if test="otherLabel != null">
+        other_label,
+      </if>
+      <if test="positionNum != null">
+        position_num,
+      </if>
+      <if test="processRate != null">
+        process_rate,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="approve != null">
+        #{approve,jdbcType=INTEGER},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="cityScore != null">
+        #{cityScore,jdbcType=INTEGER},
+      </if>
+      <if test="companyCombineScore != null">
+        #{companyCombineScore,jdbcType=DOUBLE},
+      </if>
+      <if test="companyFeatures != null">
+        #{companyFeatures,jdbcType=VARCHAR},
+      </if>
+      <if test="companyFullName != null">
+        #{companyFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyLogo != null">
+        #{companyLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="companyShortName != null">
+        #{companyShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="companySize != null">
+        #{companySize,jdbcType=VARCHAR},
+      </if>
+      <if test="countryScore != null">
+        #{countryScore,jdbcType=INTEGER},
+      </if>
+      <if test="financeStage != null">
+        #{financeStage,jdbcType=VARCHAR},
+      </if>
+      <if test="industryField != null">
+        #{industryField,jdbcType=VARCHAR},
+      </if>
+      <if test="interviewRemarkNum != null">
+        #{interviewRemarkNum,jdbcType=INTEGER},
+      </if>
+      <if test="isHasValidPosition != null">
+        #{isHasValidPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="matchPositionCount != null">
+        #{matchPositionCount,jdbcType=INTEGER},
+      </if>
+      <if test="matchScore != null">
+        #{matchScore,jdbcType=DOUBLE},
+      </if>
+      <if test="otherLabel != null">
+        #{otherLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="positionNum != null">
+        #{positionNum,jdbcType=INTEGER},
+      </if>
+      <if test="processRate != null">
+        #{processRate,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.wzx.lagou.model.auto.TbCompanyExample" resultType="java.lang.Long">
+    select count(*) from tb_company
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_company
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.approve != null">
+        approve = #{record.approve,jdbcType=INTEGER},
+      </if>
+      <if test="record.city != null">
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cityScore != null">
+        city_score = #{record.cityScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.companyCombineScore != null">
+        company_combine_score = #{record.companyCombineScore,jdbcType=DOUBLE},
+      </if>
+      <if test="record.companyFeatures != null">
+        company_features = #{record.companyFeatures,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyFullName != null">
+        company_full_name = #{record.companyFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyId != null">
+        company_id = #{record.companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyLogo != null">
+        company_logo = #{record.companyLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyShortName != null">
+        company_short_name = #{record.companyShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companySize != null">
+        company_size = #{record.companySize,jdbcType=VARCHAR},
+      </if>
+      <if test="record.countryScore != null">
+        country_score = #{record.countryScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.financeStage != null">
+        finance_stage = #{record.financeStage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.industryField != null">
+        industry_field = #{record.industryField,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interviewRemarkNum != null">
+        interview_remark_num = #{record.interviewRemarkNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.isHasValidPosition != null">
+        is_has_valid_position = #{record.isHasValidPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.matchPositionCount != null">
+        match_position_count = #{record.matchPositionCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.matchScore != null">
+        match_score = #{record.matchScore,jdbcType=DOUBLE},
+      </if>
+      <if test="record.otherLabel != null">
+        other_label = #{record.otherLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.positionNum != null">
+        position_num = #{record.positionNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.processRate != null">
+        process_rate = #{record.processRate,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_company
+    set id = #{record.id,jdbcType=INTEGER},
+      approve = #{record.approve,jdbcType=INTEGER},
+      city = #{record.city,jdbcType=VARCHAR},
+      city_score = #{record.cityScore,jdbcType=INTEGER},
+      company_combine_score = #{record.companyCombineScore,jdbcType=DOUBLE},
+      company_features = #{record.companyFeatures,jdbcType=VARCHAR},
+      company_full_name = #{record.companyFullName,jdbcType=VARCHAR},
+      company_id = #{record.companyId,jdbcType=VARCHAR},
+      company_logo = #{record.companyLogo,jdbcType=VARCHAR},
+      company_short_name = #{record.companyShortName,jdbcType=VARCHAR},
+      company_size = #{record.companySize,jdbcType=VARCHAR},
+      country_score = #{record.countryScore,jdbcType=INTEGER},
+      finance_stage = #{record.financeStage,jdbcType=VARCHAR},
+      industry_field = #{record.industryField,jdbcType=VARCHAR},
+      interview_remark_num = #{record.interviewRemarkNum,jdbcType=INTEGER},
+      is_has_valid_position = #{record.isHasValidPosition,jdbcType=VARCHAR},
+      match_position_count = #{record.matchPositionCount,jdbcType=INTEGER},
+      match_score = #{record.matchScore,jdbcType=DOUBLE},
+      other_label = #{record.otherLabel,jdbcType=VARCHAR},
+      position_num = #{record.positionNum,jdbcType=INTEGER},
+      process_rate = #{record.processRate,jdbcType=INTEGER},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wzx.lagou.model.auto.TbCompany">
+    update tb_company
+    <set>
+      <if test="approve != null">
+        approve = #{approve,jdbcType=INTEGER},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="cityScore != null">
+        city_score = #{cityScore,jdbcType=INTEGER},
+      </if>
+      <if test="companyCombineScore != null">
+        company_combine_score = #{companyCombineScore,jdbcType=DOUBLE},
+      </if>
+      <if test="companyFeatures != null">
+        company_features = #{companyFeatures,jdbcType=VARCHAR},
+      </if>
+      <if test="companyFullName != null">
+        company_full_name = #{companyFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null">
+        company_id = #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyLogo != null">
+        company_logo = #{companyLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="companyShortName != null">
+        company_short_name = #{companyShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="companySize != null">
+        company_size = #{companySize,jdbcType=VARCHAR},
+      </if>
+      <if test="countryScore != null">
+        country_score = #{countryScore,jdbcType=INTEGER},
+      </if>
+      <if test="financeStage != null">
+        finance_stage = #{financeStage,jdbcType=VARCHAR},
+      </if>
+      <if test="industryField != null">
+        industry_field = #{industryField,jdbcType=VARCHAR},
+      </if>
+      <if test="interviewRemarkNum != null">
+        interview_remark_num = #{interviewRemarkNum,jdbcType=INTEGER},
+      </if>
+      <if test="isHasValidPosition != null">
+        is_has_valid_position = #{isHasValidPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="matchPositionCount != null">
+        match_position_count = #{matchPositionCount,jdbcType=INTEGER},
+      </if>
+      <if test="matchScore != null">
+        match_score = #{matchScore,jdbcType=DOUBLE},
+      </if>
+      <if test="otherLabel != null">
+        other_label = #{otherLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="positionNum != null">
+        position_num = #{positionNum,jdbcType=INTEGER},
+      </if>
+      <if test="processRate != null">
+        process_rate = #{processRate,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wzx.lagou.model.auto.TbCompany">
+    update tb_company
+    set approve = #{approve,jdbcType=INTEGER},
+      city = #{city,jdbcType=VARCHAR},
+      city_score = #{cityScore,jdbcType=INTEGER},
+      company_combine_score = #{companyCombineScore,jdbcType=DOUBLE},
+      company_features = #{companyFeatures,jdbcType=VARCHAR},
+      company_full_name = #{companyFullName,jdbcType=VARCHAR},
+      company_id = #{companyId,jdbcType=VARCHAR},
+      company_logo = #{companyLogo,jdbcType=VARCHAR},
+      company_short_name = #{companyShortName,jdbcType=VARCHAR},
+      company_size = #{companySize,jdbcType=VARCHAR},
+      country_score = #{countryScore,jdbcType=INTEGER},
+      finance_stage = #{financeStage,jdbcType=VARCHAR},
+      industry_field = #{industryField,jdbcType=VARCHAR},
+      interview_remark_num = #{interviewRemarkNum,jdbcType=INTEGER},
+      is_has_valid_position = #{isHasValidPosition,jdbcType=VARCHAR},
+      match_position_count = #{matchPositionCount,jdbcType=INTEGER},
+      match_score = #{matchScore,jdbcType=DOUBLE},
+      other_label = #{otherLabel,jdbcType=VARCHAR},
+      position_num = #{positionNum,jdbcType=INTEGER},
+      process_rate = #{processRate,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

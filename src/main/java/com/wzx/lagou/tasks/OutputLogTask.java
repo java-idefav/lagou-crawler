@@ -338,16 +338,19 @@ public class OutputLogTask {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
             params.add("filterOption", page.toString());
             String url = String.format("%s%d/", positionTypeUrl, page);
+            System.out.println(url);
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class, params);
             String html = response.getBody();
             Document document = Jsoup.parse(html);
             Integer totalPage = Integer.parseInt(document.select("div.page-number .totalNum").text());
+            System.out.println(String.format("共%d页",totalPage));
             Elements elementPositionsList = document.select(".con_list_item");
 
-            Boolean isHaveElement = false;
+            //Boolean isHaveElement = false;//用于判断
             for (Element elementPosition : elementPositionsList) {
-                isHaveElement = true;
+                //isHaveElement = true;
+                //创建用于写入数据库的TbPositionsDto对象
                 TbPositionsDto positionsDto = new TbPositionsDto();
                 positionsDto.setCity(cityNmae);
 
@@ -405,7 +408,7 @@ public class OutputLogTask {
                     }
                 }
             }
-            if (isHaveElement && page < totalPage) {
+            if (/*isHaveElement && */page < totalPage) {
                 getPositionsData(cityNmae, positionTypeUrl, page + 1);
             }
         }catch (Exception ex){

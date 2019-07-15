@@ -34,6 +34,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -201,7 +202,7 @@ public class OutputLogTask {
      * 抓取职位类型
      * @return true表示抓取成功，false表示抓取失败
      */
-    private Boolean getPositionTypeData(){
+    private Boolean getPositionTypeData() throws UnsupportedEncodingException {
         HttpHeaders headers = new HttpHeaders();
 //        headers.add(HttpHeaders.COOKIE, "index_location_city=%E4%B8%8A%E6%B5%B7;");
         headers.add(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");
@@ -229,7 +230,7 @@ public class OutputLogTask {
                     positionTypeDto.setType(ddTextList[i]);
                     positionTypeDto.setBranch(tdText);
                     positionTypeDto.setLargeType(text);
-                    positionTypeDto.setTypeUrl(ddElements.get(i).attr("href"));
+                    positionTypeDto.setTypeUrl(URLDecoder.decode(ddElements.get(i).attr("href"), "utf-8"));
                     Boolean isHave = false;
 
                     for (TbPositionTypeDto typeDto:positionTypeDtos){
@@ -330,6 +331,7 @@ public class OutputLogTask {
         Boolean result = true;
         try {
             HttpHeaders headers = new HttpHeaders();
+//            positionTypeUrl = URLDecoder.decode(positionTypeUrl, "utf-8");//URL解码
             headers.add(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");
             headers.add(HttpHeaders.COOKIE, String.format("index_location_city=%s;", URLEncoder.encode(cityNmae, "utf-8")));
             HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
@@ -367,6 +369,7 @@ public class OutputLogTask {
                 positionsDto.setEducation(strlist[1]);
 
                 positionsDto.setCompanyUrl(elementPosition.select("div.company_name a").attr("href").trim());
+                positionsDto.setCompanyMark(elementPosition.select("i.company_mark span").text().trim());
 
                 String strCompanyInfo = elementPosition.select("div.industry").text().trim();
                 String[] split = strCompanyInfo.split("/");

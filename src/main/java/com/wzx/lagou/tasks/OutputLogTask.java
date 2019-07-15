@@ -349,6 +349,8 @@ public class OutputLogTask {
             for (Element elementPosition : elementPositionsList) {
                 isHaveElement = true;
                 TbPositionsDto positionsDto = new TbPositionsDto();
+                positionsDto.setCity(cityNmae);
+
                 positionsDto.setPositionId(elementPosition.attr("data-positionid").trim());
                 positionsDto.setSalary(elementPosition.attr("data-salary").trim());
                 positionsDto.setCompanyName(elementPosition.attr("data-company").trim());
@@ -407,7 +409,7 @@ public class OutputLogTask {
                 getPositionsData(cityNmae, positionTypeUrl, page + 1);
             }
         }catch (Exception ex){
-            System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage()+"<=404页面<=找不到分页");
             result = false;
         }
         return result;

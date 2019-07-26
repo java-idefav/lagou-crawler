@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>列表</title>
+    <script src="js\vue.min.js"></script>
+    <script src="js\axios.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="css\style.css"/>
+    <script type="text/javascript" src="https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/static/protocol/https/jquery/jquery-1.10.2.min_65682a2.js"></script>
+</head>
+<body>
+    <div id="positionData">
+    <div>
+        <form v-bind:action=[way] method="get">
+            <table>
+                <tr>
+                    <td>关键词：<input id="keyword" type="text" ></td>
+                    <input type="hidden" name="type" id="way" v-bind:value="[way]">
+                    <td><input type="radio" name="condition" v-model="way" id="all" value="getlist">全部</td>
+                    <td><input type="radio" name="condition" v-model="way" id="city" value="getlist_city?cityName=">按城市</td>
+                    <td><input type="radio" name="condition" v-model="way" id="type" value="getlist_type?positionTypeId=">按类型</td>
+                    <td><input type="radio" name="condition" v-model="way" id="conpany" value="getlist_company?companyId">按公司</td>
+                    <td><input type="radio" name="condition" v-model="way" id="education" value="getlist_edu?education=">按学历</td>
+                    <td><input type="button" v-on:click="search" value="查询"></td>
+                </tr>
+            </table>
+        </form>
+    
+    <table id="list">
+        <tr>
+            <td>ID</td>
+            <td>City</td>
+            <td>Company</td>
+            <td>Education</td>
+            <td>Position</td>
+            <td>Salary</td>
+            <td>WorkYear</td>
+            <td>Type</td>
+        </tr>
+        <tr v-for="list in info.list">
+            <td>{{list.id}}</td>
+            <td>{{list.city}}</td>
+            <td>{{list.companyName}}</td>
+            <td>{{list.education}}</td>
+            <td>{{list.positionName}}</td>
+            <td>{{list.salary}}</td>
+            <td>{{list.workYear}}</td>
+            <td>{{list.typeId}}</td>
+        </tr>
+        <tr>
+            <td colspan="8">
+                <a v-on:click="firstPage">首页</a>
+                <a v-on:click="prePage">上一页</a>
+                <a>第{{info.pageNum}}页/共{{info.pages}}页</a>
+                <a v-on:click="nextPage">下一页</a>
+                <a v-on:click="lastPage">尾页</a>
+            </td>
+        </tr>
+    </table>
+</div>
+    <script>
+            new Vue({
+            el: '#positionData',
+            data () {
+                return {
+                info: {},
+                page: 1,
+                way: 'getlist',
+                keyword: '合肥'
+                }
+            },
+            mounted (){
+                // if("undefined" == typeof page){
+                //     page=1;
+                // }
+                axios
+                .get(this.createUrl())
+                .then(response => (this.info = response.data.pageInfo))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+                },
+            methods:{
+                firstPage: function(){
+                    this.page=1
+                    this.getdata()
+                },
+                lastPage: function(){
+                    this.page=this.info.pages
+                    this.getdata()
+                },
+                prePage: function(){
+                    // this.page=this.page-1
+                    console.log(this.info)
+                    this.page=this.info.prePage
+                    this.getdata()
+                },
+                nextPage: function(){
+                    // this.page=this.page+1
+                    this.page=this.info.nextPage
+                    this.getdata()
+                },
+                search: function(){
+                    this.page=1
+                    this.keyword=$('#keyword').val()
+                    this.getdata()
+                },
+                createUrl: function(){
+                    var url = ''
+                    if (this.way=='getlist') {
+                        url = '/lagou/position/'+this.way+'?pageNum='+this.page+'&pageSize=10'
+                        
+                    }else{
+                        url = '/lagou/position/'+this.way+this.keyword+'&pageNum='+this.page+'&pageSize=10'
+                    }
+                    return url
+                    
+                },
+                getdata:function (){
+                 if(this.page<=1){
+                     this.page=1;
+                 }
+                axios
+                    .get(this.createUrl())
+                    .then(response => (this.info = response.data.pageInfo))
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+                }}
+            })
+    </script>
+</body>
+</html>

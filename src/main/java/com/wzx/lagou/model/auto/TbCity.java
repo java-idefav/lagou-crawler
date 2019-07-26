@@ -9,6 +9,10 @@ public class TbCity {
 
     private String url;
 
+    private Double avgSalaryMin;
+
+    private Double avgSalaryMax;
+
     public Integer getId() {
         return id;
     }
@@ -39,5 +43,21 @@ public class TbCity {
 
     public void setUrl(String url) {
         this.url = url == null ? null : url.trim();
+    }
+
+    public Double getAvgSalaryMin() {
+        return avgSalaryMin;
+    }
+
+    public void setAvgSalaryMin(Double avgSalaryMin) {
+        this.avgSalaryMin = avgSalaryMin;
+    }
+
+    public Double getAvgSalaryMax() {
+        return avgSalaryMax;
+    }
+
+    public void setAvgSalaryMax(Double avgSalaryMax) {
+        this.avgSalaryMax = avgSalaryMax;
     }
 }

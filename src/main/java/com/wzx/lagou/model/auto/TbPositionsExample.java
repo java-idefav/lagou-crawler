@@ -724,73 +724,73 @@ public class TbPositionsExample {
             return (Criteria) this;
         }
 
-        public Criteria andDistrictIsNull() {
-            addCriterion("district is null");
+        public Criteria andLocationIsNull() {
+            addCriterion("\" location\" is null");
             return (Criteria) this;
         }
 
-        public Criteria andDistrictIsNotNull() {
-            addCriterion("district is not null");
+        public Criteria andLocationIsNotNull() {
+            addCriterion("\" location\" is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDistrictEqualTo(String value) {
-            addCriterion("district =", value, "district");
+        public Criteria andLocationEqualTo(String value) {
+            addCriterion("\" location\" =", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDistrictNotEqualTo(String value) {
-            addCriterion("district <>", value, "district");
+        public Criteria andLocationNotEqualTo(String value) {
+            addCriterion("\" location\" <>", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDistrictGreaterThan(String value) {
-            addCriterion("district >", value, "district");
+        public Criteria andLocationGreaterThan(String value) {
+            addCriterion("\" location\" >", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDistrictGreaterThanOrEqualTo(String value) {
-            addCriterion("district >=", value, "district");
+        public Criteria andLocationGreaterThanOrEqualTo(String value) {
+            addCriterion("\" location\" >=", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDistrictLessThan(String value) {
-            addCriterion("district <", value, "district");
+        public Criteria andLocationLessThan(String value) {
+            addCriterion("\" location\" <", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDistrictLessThanOrEqualTo(String value) {
-            addCriterion("district <=", value, "district");
+        public Criteria andLocationLessThanOrEqualTo(String value) {
+            addCriterion("\" location\" <=", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDistrictLike(String value) {
-            addCriterion("district like", value, "district");
+        public Criteria andLocationLike(String value) {
+            addCriterion("\" location\" like", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDistrictNotLike(String value) {
-            addCriterion("district not like", value, "district");
+        public Criteria andLocationNotLike(String value) {
+            addCriterion("\" location\" not like", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDistrictIn(List<String> values) {
-            addCriterion("district in", values, "district");
+        public Criteria andLocationIn(List<String> values) {
+            addCriterion("\" location\" in", values, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDistrictNotIn(List<String> values) {
-            addCriterion("district not in", values, "district");
+        public Criteria andLocationNotIn(List<String> values) {
+            addCriterion("\" location\" not in", values, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDistrictBetween(String value1, String value2) {
-            addCriterion("district between", value1, value2, "district");
+        public Criteria andLocationBetween(String value1, String value2) {
+            addCriterion("\" location\" between", value1, value2, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDistrictNotBetween(String value1, String value2) {
-            addCriterion("district not between", value1, value2, "district");
+        public Criteria andLocationNotBetween(String value1, String value2) {
+            addCriterion("\" location\" not between", value1, value2, "location");
             return (Criteria) this;
         }
 

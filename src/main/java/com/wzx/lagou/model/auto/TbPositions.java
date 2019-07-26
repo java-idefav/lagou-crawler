@@ -19,7 +19,7 @@ public class TbPositions {
 
     private String createTime;
 
-    private String district;
+    private String location;
 
     private String education;
 
@@ -119,12 +119,12 @@ public class TbPositions {
         this.createTime = createTime == null ? null : createTime.trim();
     }
 
-    public String getDistrict() {
-        return district;
+    public String getLocation() {
+        return location;
     }
 
-    public void setDistrict(String district) {
-        this.district = district == null ? null : district.trim();
+    public void setLocation(String location) {
+        this.location = location == null ? null : location.trim();
     }
 
     public String getEducation() {

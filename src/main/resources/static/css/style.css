@@ -1,0 +1,19 @@
+table#tblist {
+    border-collapse:collapse;
+    border-right: 1px solid #804040;
+    border-bottom: 1px solid #804040;
+}
+#tblist td {
+    padding: 2px 10px;
+    border-left: 1px solid #804040;
+    border-top: 1px solid #804040;
+}
+a {
+    cursor: pointer;
+    padding: 2px 20px;
+    margin: auto 2px;
+    border: 1px solid #804040;
+}
+td.select {
+    border: 1px solid #804040;
+}

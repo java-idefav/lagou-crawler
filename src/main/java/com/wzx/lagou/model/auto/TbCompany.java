@@ -47,6 +47,10 @@ public class TbCompany {
 
     private Date updateTime;
 
+    private Double avgSalaryMin;
+
+    private Double avgSalaryMax;
+
     public Integer getId() {
         return id;
     }
@@ -221,5 +225,21 @@ public class TbCompany {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Double getAvgSalaryMin() {
+        return avgSalaryMin;
+    }
+
+    public void setAvgSalaryMin(Double avgSalaryMin) {
+        this.avgSalaryMin = avgSalaryMin;
+    }
+
+    public Double getAvgSalaryMax() {
+        return avgSalaryMax;
+    }
+
+    public void setAvgSalaryMax(Double avgSalaryMax) {
+        this.avgSalaryMax = avgSalaryMax;
     }
 }

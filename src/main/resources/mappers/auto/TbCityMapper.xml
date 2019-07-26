@@ -6,6 +6,8 @@
     <result column="city_id" jdbcType="VARCHAR" property="cityId" />
     <result column="city_name" jdbcType="VARCHAR" property="cityName" />
     <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="avg_salary_min" jdbcType="DOUBLE" property="avgSalaryMin" />
+    <result column="avg_salary_max" jdbcType="DOUBLE" property="avgSalaryMax" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, city_id, city_name, url
+    id, city_id, city_name, url, avg_salary_min, avg_salary_max
   </sql>
   <select id="selectByExample" parameterType="com.wzx.lagou.model.auto.TbCityExample" resultMap="BaseResultMap">
     select
@@ -100,9 +102,11 @@
   </delete>
   <insert id="insert" parameterType="com.wzx.lagou.model.auto.TbCity">
     insert into tb_city (id, city_id, city_name, 
-      url)
+      url, avg_salary_min, avg_salary_max
+      )
     values (#{id,jdbcType=INTEGER}, #{cityId,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}, 
-      #{url,jdbcType=VARCHAR})
+      #{url,jdbcType=VARCHAR}, #{avgSalaryMin,jdbcType=DOUBLE}, #{avgSalaryMax,jdbcType=DOUBLE}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.wzx.lagou.model.auto.TbCity">
     insert into tb_city
@@ -119,6 +123,12 @@
       <if test="url != null">
         url,
       </if>
+      <if test="avgSalaryMin != null">
+        avg_salary_min,
+      </if>
+      <if test="avgSalaryMax != null">
+        avg_salary_max,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -132,6 +142,12 @@
       </if>
       <if test="url != null">
         #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="avgSalaryMin != null">
+        #{avgSalaryMin,jdbcType=DOUBLE},
+      </if>
+      <if test="avgSalaryMax != null">
+        #{avgSalaryMax,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -156,6 +172,12 @@
       <if test="record.url != null">
         url = #{record.url,jdbcType=VARCHAR},
       </if>
+      <if test="record.avgSalaryMin != null">
+        avg_salary_min = #{record.avgSalaryMin,jdbcType=DOUBLE},
+      </if>
+      <if test="record.avgSalaryMax != null">
+        avg_salary_max = #{record.avgSalaryMax,jdbcType=DOUBLE},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -166,7 +188,9 @@
     set id = #{record.id,jdbcType=INTEGER},
       city_id = #{record.cityId,jdbcType=VARCHAR},
       city_name = #{record.cityName,jdbcType=VARCHAR},
-      url = #{record.url,jdbcType=VARCHAR}
+      url = #{record.url,jdbcType=VARCHAR},
+      avg_salary_min = #{record.avgSalaryMin,jdbcType=DOUBLE},
+      avg_salary_max = #{record.avgSalaryMax,jdbcType=DOUBLE}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -183,6 +207,12 @@
       <if test="url != null">
         url = #{url,jdbcType=VARCHAR},
       </if>
+      <if test="avgSalaryMin != null">
+        avg_salary_min = #{avgSalaryMin,jdbcType=DOUBLE},
+      </if>
+      <if test="avgSalaryMax != null">
+        avg_salary_max = #{avgSalaryMax,jdbcType=DOUBLE},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -190,7 +220,9 @@
     update tb_city
     set city_id = #{cityId,jdbcType=VARCHAR},
       city_name = #{cityName,jdbcType=VARCHAR},
-      url = #{url,jdbcType=VARCHAR}
+      url = #{url,jdbcType=VARCHAR},
+      avg_salary_min = #{avgSalaryMin,jdbcType=DOUBLE},
+      avg_salary_max = #{avgSalaryMax,jdbcType=DOUBLE}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

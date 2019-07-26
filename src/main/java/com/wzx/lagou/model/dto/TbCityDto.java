@@ -12,4 +12,7 @@ public class TbCityDto {
 
     private String url;
 
+    private String avgSalaryMin;
+
+    private String avgSalaryMax;
 }

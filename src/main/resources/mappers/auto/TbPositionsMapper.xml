@@ -11,7 +11,7 @@
     <result column="company_name" jdbcType="VARCHAR" property="companyName" />
     <result column="company_size" jdbcType="VARCHAR" property="companySize" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-    <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column=" location" jdbcType="VARCHAR" property="location" />
     <result column="education" jdbcType="VARCHAR" property="education" />
     <result column="finance_stage" jdbcType="VARCHAR" property="financeStage" />
     <result column="industry_field" jdbcType="VARCHAR" property="industryField" />
@@ -86,9 +86,9 @@
   </sql>
   <sql id="Base_Column_List">
     id, city, company_full_name, company_id, position_label_list, company_logo, company_name, 
-    company_size, create_time, district, education, finance_stage, industry_field, position_advantage, 
-    position_id, position_name, salary, work_year, hr_id, type_id, company_url, position_url, 
-    company_mark
+    company_size, create_time, " location", education, finance_stage, industry_field, 
+    position_advantage, position_id, position_name, salary, work_year, hr_id, type_id, 
+    company_url, position_url, company_mark
   </sql>
   <select id="selectByExample" parameterType="com.wzx.lagou.model.auto.TbPositionsExample" resultMap="BaseResultMap">
     select
@@ -124,7 +124,7 @@
     insert into tb_positions (id, city, company_full_name, 
       company_id, position_label_list, company_logo, 
       company_name, company_size, create_time, 
-      district, education, finance_stage, 
+      " location", education, finance_stage, 
       industry_field, position_advantage, position_id, 
       position_name, salary, work_year, 
       hr_id, type_id, company_url, 
@@ -132,7 +132,7 @@
     values (#{id,jdbcType=INTEGER}, #{city,jdbcType=VARCHAR}, #{companyFullName,jdbcType=VARCHAR}, 
       #{companyId,jdbcType=VARCHAR}, #{positionLabelList,jdbcType=VARCHAR}, #{companyLogo,jdbcType=VARCHAR}, 
       #{companyName,jdbcType=VARCHAR}, #{companySize,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
-      #{district,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, #{financeStage,jdbcType=VARCHAR}, 
+      #{location,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, #{financeStage,jdbcType=VARCHAR}, 
       #{industryField,jdbcType=VARCHAR}, #{positionAdvantage,jdbcType=VARCHAR}, #{positionId,jdbcType=VARCHAR}, 
       #{positionName,jdbcType=VARCHAR}, #{salary,jdbcType=VARCHAR}, #{workYear,jdbcType=VARCHAR}, 
       #{hrId,jdbcType=VARCHAR}, #{typeId,jdbcType=VARCHAR}, #{companyUrl,jdbcType=VARCHAR}, 
@@ -168,8 +168,8 @@
       <if test="createTime != null">
         create_time,
       </if>
-      <if test="district != null">
-        district,
+      <if test="location != null">
+        " location",
       </if>
       <if test="education != null">
         education,
@@ -239,8 +239,8 @@
       <if test="createTime != null">
         #{createTime,jdbcType=VARCHAR},
       </if>
-      <if test="district != null">
-        #{district,jdbcType=VARCHAR},
+      <if test="location != null">
+        #{location,jdbcType=VARCHAR},
       </if>
       <if test="education != null">
         #{education,jdbcType=VARCHAR},
@@ -319,8 +319,8 @@
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=VARCHAR},
       </if>
-      <if test="record.district != null">
-        district = #{record.district,jdbcType=VARCHAR},
+      <if test="record.location != null">
+        " location" = #{record.location,jdbcType=VARCHAR},
       </if>
       <if test="record.education != null">
         education = #{record.education,jdbcType=VARCHAR},
@@ -377,7 +377,7 @@
       company_name = #{record.companyName,jdbcType=VARCHAR},
       company_size = #{record.companySize,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=VARCHAR},
-      district = #{record.district,jdbcType=VARCHAR},
+      " location" = #{record.location,jdbcType=VARCHAR},
       education = #{record.education,jdbcType=VARCHAR},
       finance_stage = #{record.financeStage,jdbcType=VARCHAR},
       industry_field = #{record.industryField,jdbcType=VARCHAR},
@@ -422,8 +422,8 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=VARCHAR},
       </if>
-      <if test="district != null">
-        district = #{district,jdbcType=VARCHAR},
+      <if test="location != null">
+        " location" = #{location,jdbcType=VARCHAR},
       </if>
       <if test="education != null">
         education = #{education,jdbcType=VARCHAR},
@@ -477,7 +477,7 @@
       company_name = #{companyName,jdbcType=VARCHAR},
       company_size = #{companySize,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=VARCHAR},
-      district = #{district,jdbcType=VARCHAR},
+      " location" = #{location,jdbcType=VARCHAR},
       education = #{education,jdbcType=VARCHAR},
       finance_stage = #{financeStage,jdbcType=VARCHAR},
       industry_field = #{industryField,jdbcType=VARCHAR},

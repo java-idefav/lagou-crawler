@@ -373,6 +373,126 @@ public class TbCityExample {
             addCriterion("url not between", value1, value2, "url");
             return (Criteria) this;
         }
+
+        public Criteria andAvgSalaryMinIsNull() {
+            addCriterion("avg_salary_min is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMinIsNotNull() {
+            addCriterion("avg_salary_min is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMinEqualTo(Double value) {
+            addCriterion("avg_salary_min =", value, "avgSalaryMin");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMinNotEqualTo(Double value) {
+            addCriterion("avg_salary_min <>", value, "avgSalaryMin");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMinGreaterThan(Double value) {
+            addCriterion("avg_salary_min >", value, "avgSalaryMin");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMinGreaterThanOrEqualTo(Double value) {
+            addCriterion("avg_salary_min >=", value, "avgSalaryMin");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMinLessThan(Double value) {
+            addCriterion("avg_salary_min <", value, "avgSalaryMin");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMinLessThanOrEqualTo(Double value) {
+            addCriterion("avg_salary_min <=", value, "avgSalaryMin");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMinIn(List<Double> values) {
+            addCriterion("avg_salary_min in", values, "avgSalaryMin");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMinNotIn(List<Double> values) {
+            addCriterion("avg_salary_min not in", values, "avgSalaryMin");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMinBetween(Double value1, Double value2) {
+            addCriterion("avg_salary_min between", value1, value2, "avgSalaryMin");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMinNotBetween(Double value1, Double value2) {
+            addCriterion("avg_salary_min not between", value1, value2, "avgSalaryMin");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMaxIsNull() {
+            addCriterion("avg_salary_max is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMaxIsNotNull() {
+            addCriterion("avg_salary_max is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMaxEqualTo(Double value) {
+            addCriterion("avg_salary_max =", value, "avgSalaryMax");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMaxNotEqualTo(Double value) {
+            addCriterion("avg_salary_max <>", value, "avgSalaryMax");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMaxGreaterThan(Double value) {
+            addCriterion("avg_salary_max >", value, "avgSalaryMax");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMaxGreaterThanOrEqualTo(Double value) {
+            addCriterion("avg_salary_max >=", value, "avgSalaryMax");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMaxLessThan(Double value) {
+            addCriterion("avg_salary_max <", value, "avgSalaryMax");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMaxLessThanOrEqualTo(Double value) {
+            addCriterion("avg_salary_max <=", value, "avgSalaryMax");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMaxIn(List<Double> values) {
+            addCriterion("avg_salary_max in", values, "avgSalaryMax");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMaxNotIn(List<Double> values) {
+            addCriterion("avg_salary_max not in", values, "avgSalaryMax");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMaxBetween(Double value1, Double value2) {
+            addCriterion("avg_salary_max between", value1, value2, "avgSalaryMax");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvgSalaryMaxNotBetween(Double value1, Double value2) {
+            addCriterion("avg_salary_max not between", value1, value2, "avgSalaryMax");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

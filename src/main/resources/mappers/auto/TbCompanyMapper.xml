@@ -24,6 +24,8 @@
     <result column="position_num" jdbcType="INTEGER" property="positionNum" />
     <result column="process_rate" jdbcType="INTEGER" property="processRate" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="avg_salary_min" jdbcType="DOUBLE" property="avgSalaryMin" />
+    <result column="avg_salary_max" jdbcType="DOUBLE" property="avgSalaryMax" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -87,7 +89,8 @@
     id, approve, city, city_score, company_combine_score, company_features, company_full_name, 
     company_id, company_logo, company_short_name, company_size, country_score, finance_stage, 
     industry_field, interview_remark_num, is_has_valid_position, match_position_count, 
-    match_score, other_label, position_num, process_rate, update_time
+    match_score, other_label, position_num, process_rate, update_time, avg_salary_min, 
+    avg_salary_max
   </sql>
   <select id="selectByExample" parameterType="com.wzx.lagou.model.auto.TbCompanyExample" resultMap="BaseResultMap">
     select
@@ -127,7 +130,8 @@
       finance_stage, industry_field, interview_remark_num, 
       is_has_valid_position, match_position_count, 
       match_score, other_label, position_num, 
-      process_rate, update_time)
+      process_rate, update_time, avg_salary_min, 
+      avg_salary_max)
     values (#{id,jdbcType=INTEGER}, #{approve,jdbcType=INTEGER}, #{city,jdbcType=VARCHAR}, 
       #{cityScore,jdbcType=INTEGER}, #{companyCombineScore,jdbcType=DOUBLE}, #{companyFeatures,jdbcType=VARCHAR}, 
       #{companyFullName,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, #{companyLogo,jdbcType=VARCHAR}, 
@@ -135,7 +139,8 @@
       #{financeStage,jdbcType=VARCHAR}, #{industryField,jdbcType=VARCHAR}, #{interviewRemarkNum,jdbcType=INTEGER}, 
       #{isHasValidPosition,jdbcType=VARCHAR}, #{matchPositionCount,jdbcType=INTEGER}, 
       #{matchScore,jdbcType=DOUBLE}, #{otherLabel,jdbcType=VARCHAR}, #{positionNum,jdbcType=INTEGER}, 
-      #{processRate,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP})
+      #{processRate,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{avgSalaryMin,jdbcType=DOUBLE}, 
+      #{avgSalaryMax,jdbcType=DOUBLE})
   </insert>
   <insert id="insertSelective" parameterType="com.wzx.lagou.model.auto.TbCompany">
     insert into tb_company
@@ -206,6 +211,12 @@
       <if test="updateTime != null">
         update_time,
       </if>
+      <if test="avgSalaryMin != null">
+        avg_salary_min,
+      </if>
+      <if test="avgSalaryMax != null">
+        avg_salary_max,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -273,6 +284,12 @@
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="avgSalaryMin != null">
+        #{avgSalaryMin,jdbcType=DOUBLE},
+      </if>
+      <if test="avgSalaryMax != null">
+        #{avgSalaryMax,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -351,6 +368,12 @@
       <if test="record.updateTime != null">
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.avgSalaryMin != null">
+        avg_salary_min = #{record.avgSalaryMin,jdbcType=DOUBLE},
+      </if>
+      <if test="record.avgSalaryMax != null">
+        avg_salary_max = #{record.avgSalaryMax,jdbcType=DOUBLE},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -379,7 +402,9 @@
       other_label = #{record.otherLabel,jdbcType=VARCHAR},
       position_num = #{record.positionNum,jdbcType=INTEGER},
       process_rate = #{record.processRate,jdbcType=INTEGER},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      avg_salary_min = #{record.avgSalaryMin,jdbcType=DOUBLE},
+      avg_salary_max = #{record.avgSalaryMax,jdbcType=DOUBLE}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -450,6 +475,12 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="avgSalaryMin != null">
+        avg_salary_min = #{avgSalaryMin,jdbcType=DOUBLE},
+      </if>
+      <if test="avgSalaryMax != null">
+        avg_salary_max = #{avgSalaryMax,jdbcType=DOUBLE},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -475,7 +506,9 @@
       other_label = #{otherLabel,jdbcType=VARCHAR},
       position_num = #{positionNum,jdbcType=INTEGER},
       process_rate = #{processRate,jdbcType=INTEGER},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      avg_salary_min = #{avgSalaryMin,jdbcType=DOUBLE},
+      avg_salary_max = #{avgSalaryMax,jdbcType=DOUBLE}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzx.lagou.repository.TbCityMapperEx">
+    <resultMap id="BaseResultMap2" type="com.wzx.lagou.model.dto.TbCityDto" extends="com.wzx.lagou.repository.auto.TbCityMapper.BaseResultMap">
+    </resultMap>
+    <select id="queryCityList2" resultMap="BaseResultMap2">
+        SELECT *
+         from tb_city WHERE id=#{id}
+        <if test="cityName != null ">
+AND city_name=#{cityName}
+        </if>
+    </select>
+
+
+</mapper>

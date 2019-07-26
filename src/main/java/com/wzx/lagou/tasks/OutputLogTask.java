@@ -4,10 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sun.org.apache.bcel.internal.generic.NEW;
+import com.wzx.lagou.common.AvgSalary;
 import com.wzx.lagou.common.RedisUtils;
 import com.wzx.lagou.config.MyConfig;
 import com.wzx.lagou.model.auto.TbCompany;
+import com.wzx.lagou.model.auto.TbPosition;
 import com.wzx.lagou.model.dto.*;
 import com.wzx.lagou.service.CityService;
 import com.wzx.lagou.service.CompanyService;
@@ -29,6 +33,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
@@ -36,11 +41,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 @Component
 @EnableScheduling
@@ -67,43 +70,44 @@ public class OutputLogTask {
     @Resource
     private MyConfig myConfig;
 
-    @Scheduled(cron="0/15 * * * * ?")
+//    @Scheduled(cron="0 48 4/5 * * ?")
+    @Scheduled(cron="0/10 * * * * ?")
     private void outputLod() throws IOException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.println("现在是："+sdf.format(new Date()));
         //redis操作
         //redisUtils.set("redis_key", new Date().toString());
         //redisUtils.delete("redis_key");
-
-        //jackson序列化、反序列化
-        TbUserDto userDto = new TbUserDto();
-        userDto.setId(1);
-        userDto.setUserId("zhangsan");
-        userDto.setUserPwd("zhangsan123");
-
-        ObjectMapper mapper = new ObjectMapper();
-        //Obj => Json
-        String json = mapper.writeValueAsString(userDto);
-        System.out.println(json);
-        //Json => Obj
-        json = "{\"id\":2,\"userId\":\"lisi\",\"userPwd\":\"lisi123\"}";
-        TbUserDto user = mapper.readValue(json, TbUserDto.class);
-        System.out.println(user);
-
-        //fastjson序列化、反序列化
-        //TbUserDto userDto = new TbUserDto();
-        userDto.setId(1);
-        userDto.setUserId("zhangsan");
-        userDto.setUserPwd("zhangsan123");
-
-        //JSONObject jsonObject = new JSONObject(string);
-        //Obj => Json
-        String jsonString = JSON.toJSONString(userDto);
-        System.out.println(jsonString);
-        //Json => Obj
-        json = "{\"id\":2,\"userId\":\"lisi\",\"userPwd\":\"lisi123\"}";
-        user = JSON.parseObject(json, TbUserDto.class);
-        System.out.println(user);
+        //=========================序列化、反序列===========================================
+//        //jackson序列化、反序列化
+//        TbUserDto userDto = new TbUserDto();
+//        userDto.setId(1);
+//        userDto.setUserId("zhangsan");
+//        userDto.setUserPwd("zhangsan123");
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//        //Obj => Json
+//        String json = mapper.writeValueAsString(userDto);
+//        System.out.println(json);
+//        //Json => Obj
+//        json = "{\"id\":2,\"userId\":\"lisi\",\"userPwd\":\"lisi123\"}";
+//        TbUserDto user = mapper.readValue(json, TbUserDto.class);
+//        System.out.println(user);
+//
+//        //fastjson序列化、反序列化
+//        //TbUserDto userDto = new TbUserDto();
+//        userDto.setId(1);
+//        userDto.setUserId("zhangsan");
+//        userDto.setUserPwd("zhangsan123");
+//
+//        //JSONObject jsonObject = new JSONObject(string);
+//        //Obj => Json
+//        String jsonString = JSON.toJSONString(userDto);
+//        System.out.println(jsonString);
+//        //Json => Obj
+//        json = "{\"id\":2,\"userId\":\"lisi\",\"userPwd\":\"lisi123\"}";
+//        user = JSON.parseObject(json, TbUserDto.class);
+//        System.out.println(user);
 
         //==================抓取公司数据=======================================================
 //        String cookie = "_ga=GA1.2.1887885701.1559088698; user_trace_token=20190529081143-56fffa4c-81a6-11e9-a7f0-525400f775ce; LGUID=20190529081143-56fffd69-81a6-11e9-a7f0-525400f775ce; LG_HAS_LOGIN=1; index_location_city=%E4%B8%8A%E6%B5%B7; _gid=GA1.2.1810111922.1562644475; LG_LOGIN_USER_ID=5489c0205ec0bdb2af7fa33cf5ed0bc9f3f985508a56415b04f0c494a17d4a72; showExpriedIndex=1; showExpriedCompanyHome=1; showExpriedMyPublish=1; hasDeliver=96; gate_login_token=ddc81292e662496bd96997a285d9ce41ff0f88f346fdc760f8b9d2795dcd9d48; privacyPolicyPopup=false; JSESSIONID=ABAAABAABEEAAJAE5D1A141EEAC236EEECBE22009223438; _putrc=57271BB4DCFF207D123F89F2B170EADC; login=true; unick=%E5%90%B4%E5%AD%90%E5%B9%B8; Hm_lvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1562644475,1562660384,1562735301,1562738011; SEARCH_ID=4e01d6081c6f4afe93a7e75b8f96128c; TG-TRACK-CODE=search_code; X_HTTP_TOKEN=d5bed1e0f71466570572472651bc6b0411fb01729d; _gat=1; Hm_lpvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1562750831; LGSID=20190710172714-e72a3841-a2f4-11e9-be2a-525400f775ce; PRE_UTM=; PRE_HOST=; PRE_SITE=https%3A%2F%2Fsec.lagou.com%2Fverify.html%3Fe%3D3%26f%3Dhttps%3A%2F%2Fwww.lagou.com%2Fgongsi%2F; PRE_LAND=https%3A%2F%2Fwww.lagou.com%2Fgongsi%2F; LGRID=20190710172714-e72a3989-a2f4-11e9-be2a-525400f775ce";
@@ -124,15 +128,36 @@ public class OutputLogTask {
         //======================抓取城市数据================================================
 //        getCityData();
 
+//        =================修正WorkYear错误============
+//        Integer count = positionsService.countPositionNum();
+//        double pages = Math.ceil((double)count / (double) 50);
+//        for (int i=1;i<=pages;i++){
+//            Map<String, Object> map = positionsService.selectAllPositionPaging(i, 100);
+//            List<TbPositionsDto> positionsDtoList = (List<TbPositionsDto>)map.get("objList");
+//            List<TbPositionsDto> positionsDtos = mapperFacade.mapAsList(positionsDtoList, TbPositionsDto.class);
+//            for(TbPositionsDto positionsDto:positionsDtos) {
+//                positionsDto.setWorkYear(positionsDto.getWorkYear().replace(positionsDto.getSalary(), "").trim());
+//                Boolean updatePosition = positionsService.updatePosition(positionsDto);
+//            }
+//            System.out.println(i);
+//        }
+
         //======================抓取公司职位数据================================================
-        List<TbCityDto> cityDtos = cityService.selectCityDto();
-        List<TbPositionTypeDto> positionTypeDtos = positionTypeService.selectPositionTypes();
-        for (TbCityDto cityDto:cityDtos) {
-            for (TbPositionTypeDto positionTypeDto:positionTypeDtos) {
-                System.out.println(cityDto.getCityName()+"=>"+positionTypeDto.getType());
-                getPositionsData(cityDto.getCityName(), positionTypeDto.getTypeUrl(), 1);
-            }
-        }
+//        List<TbCityDto> cityDtos = cityService.selectCityDto();
+//        List<TbPositionTypeDto> positionTypeDtos = positionTypeService.selectPositionTypes();
+//        for (TbCityDto cityDto:cityDtos) {
+//            for (TbPositionTypeDto positionTypeDto:positionTypeDtos) {
+//                System.out.println(cityDto.getCityName()+"=>"+positionTypeDto.getType());
+//                getPositionsData(cityDto.getCityName(), positionTypeDto.getTypeId(), positionTypeDto.getTypeUrl(), 1);
+//            }
+//        }
+        //======================计算公司平均工资================================================
+//        updataAvgSalaryByCity();
+
+        //======================补全公司名单================================================
+//        updateCompanyData();
+        //======================计算公司平均工资================================================
+//        calcCompanyAvgSalary();
     }
 
     /**
@@ -327,7 +352,7 @@ public class OutputLogTask {
      * @return true表示抓取成功，false表示抓取失败
      * @throws UnsupportedEncodingException
      */
-    private Boolean getPositionsData(String cityNmae,String positionTypeUrl,Integer page) throws UnsupportedEncodingException {
+    private Boolean getPositionsData(String cityNmae,String typeId,String positionTypeUrl,Integer page) throws UnsupportedEncodingException {
         Boolean result = true;
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -353,6 +378,7 @@ public class OutputLogTask {
                 //创建用于写入数据库的TbPositionsDto对象
                 TbPositionsDto positionsDto = new TbPositionsDto();
                 positionsDto.setCity(cityNmae);
+                positionsDto.setTypeId(typeId);
 
                 positionsDto.setPositionId(elementPosition.attr("data-positionid").trim());
                 positionsDto.setSalary(elementPosition.attr("data-salary").trim());
@@ -363,12 +389,12 @@ public class OutputLogTask {
 
                 Elements elementLink = elementPosition.select("a.position_link");
                 positionsDto.setPositionUrl(elementLink.attr("href").trim());
-                positionsDto.setDistrict(elementLink.select("em").text().trim());
+                positionsDto.setLocation(elementLink.select("em").text().trim());
 
                 positionsDto.setCreateTime(elementPosition.select("span.format-time").text().trim());
 
                 String strExps = elementPosition.select("div.list_item_top .li_b_l").text().trim();
-                strExps.replace(positionsDto.getSalary(), "");
+                strExps = strExps.replace(positionsDto.getSalary(), "");
                 String[] strlist = strExps.split("/");
                 positionsDto.setWorkYear(strlist[0].trim());
                 positionsDto.setEducation(strlist[1]);
@@ -409,7 +435,7 @@ public class OutputLogTask {
                 }
             }
             if (/*isHaveElement && */page < totalPage) {
-                getPositionsData(cityNmae, positionTypeUrl, page + 1);
+                getPositionsData(cityNmae,typeId, positionTypeUrl, page + 1);
             }
         }catch (Exception ex){
             System.out.println(ex.getMessage()+"<=404页面<=找不到分页");
@@ -417,4 +443,86 @@ public class OutputLogTask {
         }
         return result;
     }
+
+    /**
+     * 计算城市平均工资
+     * @return 无
+     */
+    private void updataAvgSalaryByCity(){
+        List<TbCityDto> cityDtos = cityService.selectCityDto();
+        for (TbCityDto cityDto:cityDtos){
+            Map<String, Object> map = positionsService.selectAllPositionByCity(cityDto.getCityName(),1, 100);
+            PageInfo pageInfo = (PageInfo) map.get("pageInfo");
+            List<TbPositionsDto> list = pageInfo.getList();
+            int pages = pageInfo.getPages();
+            if (pages>1) {
+                for (int i = 2;i<=pages;i++){
+                    Map<String, Object> map1 = positionsService.selectAllPositionByCity(cityDto.getCityName(),i, 100);
+                    PageInfo pageInfo1 = (PageInfo) map1.get("pageInfo");
+                    List<TbPositionsDto> list1 = pageInfo1.getList();
+                    list.addAll(list1);
+                }
+            }
+            Map<String, Double> avgSalaryMap = AvgSalary.getAvgSalary(mapperFacade.mapAsList(list, TbPositionsDto.class));
+            DecimalFormat df = new DecimalFormat("0.00");
+            cityDto.setAvgSalaryMin(df.format(avgSalaryMap.get("avgSalaryMin")));
+            cityDto.setAvgSalaryMax(df.format(avgSalaryMap.get("avgSalaryMax")));
+            Boolean aBoolean = cityService.updateCity(cityDto);
+            System.out.println(cityDto.getCityName()+"==>"+aBoolean);
+        }
+    }
+
+    /**
+     * 更新company数据
+     */
+    private void updateCompanyData() {
+        List<TbPositionsDto> positionsDtoList = positionsService.selectAllCompanys();
+        for (TbPositionsDto positionsDto:positionsDtoList){
+            TbCompanyDto companyDto = new TbCompanyDto();
+            companyDto.setCity(positionsDto.getCity());
+            companyDto.setCompanyId(positionsDto.getCompanyId());
+            companyDto.setCompanyShortName(positionsDto.getCompanyName());
+            companyDto.setCompanyLogo(positionsDto.getCompanyLogo());
+            companyDto.setCompanySize(positionsDto.getCompanySize());
+            boolean isHave = companyService.selectCompanyByCompanyId(positionsDto.getCompanyId()).size() > 0;
+            if (isHave) {
+                Boolean status = companyService.updateCompany(mapperFacade.map(companyDto, TbCompany.class));
+                System.out.println(positionsDto.getCompanyName()+"==>更新"+status);
+            }else {
+                boolean status = companyService.insertCompany(mapperFacade.map(companyDto, TbCompany.class));
+                System.out.println(positionsDto.getCompanyName()+"==>添加"+status);
+            }
+        }
+    }
+
+    /**
+     * 计算公司平均工资
+     */
+    private void calcCompanyAvgSalary() {
+        PageInfo pageInfo = companyService.selectAllCompany(1, 100);
+        List<TbCompanyDto> companylist = pageInfo.getList();
+        for (int i=2;i<=pageInfo.getPages();i++){
+            PageInfo pageInfo1 = companyService.selectAllCompany(i, 100);
+            companylist.addAll(pageInfo1.getList());
+        }
+        for (TbCompanyDto companyDto:companylist){
+            Map<String, Object> map = positionsService.selectAllPositionByCompany(companyDto.getCompanyId(),1, 100);
+            List<TbPositionsDto> positionDtoList = mapperFacade.mapAsList((List<TbPosition>)map.get("objList"),TbPositionsDto.class);
+            PageInfo pageInfo1 = (PageInfo) map.get("pageInfo");
+            if (pageInfo1.getPages()>1) {
+                for (int j = 2; j <= pageInfo1.getPages(); j++) {
+                    map = positionsService.selectAllPositionByCompany(companyDto.getCompanyId(), j, 100);
+                    positionDtoList.addAll(mapperFacade.mapAsList((List<TbPosition>)map.get("objList"),TbPositionsDto.class));
+                }
+            }
+            Map<String, Double> avgSalary = AvgSalary.getAvgSalary(positionDtoList);
+            TbCompany company = new TbCompany();
+            company.setCompanyId(companyDto.getCompanyId());
+            company.setAvgSalaryMin(avgSalary.get("avgSalaryMin"));
+            company.setAvgSalaryMax(avgSalary.get("avgSalaryMax"));
+            Boolean status = companyService.updateCompany(company);
+            System.out.println(companyDto.getCompanyShortName()+"==>"+status);
+        }
+    }
+
 }

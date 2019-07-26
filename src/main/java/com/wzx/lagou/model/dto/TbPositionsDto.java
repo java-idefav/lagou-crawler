@@ -24,7 +24,7 @@ public class TbPositionsDto {
 
     private String createTime;
 
-    private String district;
+    private String location;
 
     private String education;
 
@@ -51,4 +51,6 @@ public class TbPositionsDto {
     private String positionUrl;
 
     private String companyMark;
+
+    private TbCompanyDto company;
 }

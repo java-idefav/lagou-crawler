@@ -51,4 +51,9 @@ public class TbCompanyDto {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+
+    private Double avgSalaryMin;
+
+    private Double avgSalaryMax;
+
 }

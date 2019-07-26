@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzx.lagou.repository.TbPositionsMapperEx">
+
+    <resultMap id="BaseResultMap" type="com.wzx.lagou.model.dto.TbPositionsDto"
+               extends="com.wzx.lagou.repository.auto.TbPositionsMapper.BaseResultMap">
+        <association property="company" resultMap="com.wzx.lagou.repository.TbCompanyMapperEx.BaseResultMap"/>
+    </resultMap>
+    <select id="queryOne" resultMap="BaseResultMap">
+        SELECT
+        a.*,b.*
+         from tb_positions a
+        LEFT JOIN tb_company b on a.company_id=b.company_id
+        WHERE a.id=#{id}
+    </select>
+    <select id="selectAllCompany" resultType="com.wzx.lagou.model.dto.TbPositionsDto">
+        select *
+        from tb_positions
+        GROUP BY company_id
+    </select>
+</mapper>

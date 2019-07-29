@@ -1,5 +1,6 @@
 package com.wzx.lagou.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.wzx.lagou.model.auto.TbPositionsExample;
@@ -8,10 +9,15 @@ import com.wzx.lagou.model.dto.TbPositionsDto;
 import com.wzx.lagou.repository.TbPositionsMapperEx;
 import com.wzx.lagou.repository.auto.TbPositionsMapper;
 import com.wzx.lagou.service.PositionsService;
+import com.wzx.lagou.service.RedisCacheService;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,16 +32,36 @@ public class PositionsServiceImpl implements PositionsService{
     private TbPositionsMapperEx positionsMapperEx;
 
     @Autowired
+    private RedisCacheService redisCacheService;
+
+    @Autowired
     private MapperFacade mapperFacade;
 
+//    @Cacheable(cacheNames = {"posituons"})
     public Map<String, Object> selectAllPositionPaging(Integer pageNum, Integer pageSize) {
+//        RedisCacheService redisCacheService = new RedisCacheServiceImpl();
+        try {
+            Object obj = redisCacheService.redisRead("positions:"+pageNum+"_"+pageSize);
+            if (obj!=null) {
+                return (Map<String, Object>)obj;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         PageHelper.startPage(pageNum, pageSize);
         TbPositionsExample example = new TbPositionsExample();
         List<TbPositions> positionList = positionsMapper.selectByExample(example);
         PageInfo pageInfo = new PageInfo(positionList);
+        pageInfo.setList(mapperFacade.mapAsList(positionList, TbPositionsDto.class));
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("pageInfo", pageInfo);
         map.put("objList", positionList);
+        try {
+            redisCacheService.redisAdd("positions", pageNum+"_"+pageSize, map);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        System.out.println("数据库查询...........");
         return map;
     }
 
@@ -62,6 +88,7 @@ public class PositionsServiceImpl implements PositionsService{
         return (int)positionsMapper.countByExample(example);
     }
 
+    @Cacheable(value = "all",keyGenerator = "keyGenerator")
     public Map<String, Object> selectAllPositionByCity(String cityName, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         TbPositionsExample example = new TbPositionsExample();

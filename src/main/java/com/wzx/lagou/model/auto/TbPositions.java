@@ -1,5 +1,7 @@
 package com.wzx.lagou.model.auto;
 
+import java.io.Serializable;
+
 public class TbPositions {
     private Integer id;
 

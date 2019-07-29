@@ -2,10 +2,11 @@ package com.wzx.lagou.model.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class TbPositionsDto {
+public class TbPositionsDto implements Serializable{
     private Integer id;
 
     private String city;

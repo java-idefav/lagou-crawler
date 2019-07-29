@@ -70,7 +70,7 @@ public class OutputLogTask {
     @Resource
     private MyConfig myConfig;
 
-//    @Scheduled(cron="0 48 4/5 * * ?")
+//    @Scheduled(cron="40 3 2/5 * * ?")
     @Scheduled(cron="0/10 * * * * ?")
     private void outputLod() throws IOException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

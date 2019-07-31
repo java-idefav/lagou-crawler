@@ -84,6 +84,11 @@ public class PositionController {
         return companyService.selectCompanyDto(order, desc, pageNum, pageSize);
     }
 
+    @RequestMapping("/mongodb/avgsalarybycompany")
+    public PageInfo sortAvgSalaryMongodbByCompany(String order,Boolean desc,Integer pageNum,Integer pageSize){
+        return companyService.selectAllCompanyOnMongodb(desc, pageNum, pageSize);
+    }
+
     @GetMapping("/query")
     public TbPositionsDto query(Long id){
         TbPositionsDto positionsDto = positionsMapperEx.queryOne(id);

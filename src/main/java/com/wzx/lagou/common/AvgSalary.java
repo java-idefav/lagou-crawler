@@ -18,8 +18,10 @@ public class AvgSalary implements Comparator<Map<String,Object>>{
             min += salaryMap.get("minSalary");
             max += salaryMap.get("maxSalary");
         }
-        map.put("avgSalaryMin", min/(double)TbPositionsDtoList.size());
-        map.put("avgSalaryMax", max/(double)TbPositionsDtoList.size());
+        min = Double.valueOf(String.format("%.2f", min/(double)TbPositionsDtoList.size()));
+        max = Double.valueOf(String.format("%.2f", max/(double)TbPositionsDtoList.size()));
+        map.put("avgSalaryMin", min);
+        map.put("avgSalaryMax", max);
         return map;
     }
 

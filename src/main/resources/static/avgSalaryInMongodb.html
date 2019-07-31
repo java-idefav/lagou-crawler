@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>平均工资</title>
+    <script src="js\vue.min.js"></script>
+    <script src="js\axios.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="css\style.css"/>
+    <script type="text/javascript" src="https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/static/protocol/https/jquery/jquery-1.10.2.min_65682a2.js"></script>
+</head>
+<body>
+    <div id="dataList">
+        <div>
+            <table>
+                <tr>
+                    <td>选择：</td>
+                    <td class="select">  
+                        <input type="hidden" name="type" id="way" v-bind:value="[way]">                                          
+                        <input type="radio" name="condition" v-model="way" id="city" value="city">按城市
+                        <input type="radio" name="condition" v-model="way" id="company" value="company">按公司
+                    </td>
+                    <td class="select">
+                        <input type="hidden" name="type" id="salary" v-bind:value="[salary]">    
+                        <input type="radio" name="salary" v-model="salary" id="min" value="avg_salary_min">按最低工资
+                        <input type="radio" name="salary" v-model="salary" id="max" value="avg_salary_max">按最高工资
+                        <input type="checkbox" name="desc" v-model="desc" id="desc" >逆序
+                    </td>
+                    <td><input type="button" v-on:click="reload" value="查询"></td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <table id="tblist">
+                <tr>
+                    <td>{{way}}</td>
+                    <td>Min-AvgSalary</td>
+                    <td>Min-AvgSalary</td>
+                </tr>
+                <tr v-for="list in info.list">
+                    <template v-if="way === 'city'">
+                        <td>{{list.cityName}}</td>
+                        <td>{{list.avgSalaryMin}}K</td>
+                        <td>{{list.avgSalaryMax}}K</td>
+                    </template>
+                    <template v-else>
+                        <td>{{list.company_name}}</td>
+                        <td>{{list.minSalary}}K</td>
+                        <td>{{list.maxSalary}}K</td>
+                    </template>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <a v-on:click="firstPage">首页</a>
+                        <a v-on:click="prePage">上一页</a>
+                        <a>第{{info.pageNum}}页/共{{info.pages}}页</a>
+                        <a v-on:click="nextPage">下一页</a>
+                        <a v-on:click="lastPage">尾页</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: '#dataList',
+            data () {
+                return {
+                    way:'city',
+                    salary:'avg_salary_min',
+                    info:'null',
+                    page:1,
+                    desc:false
+                }
+            },
+            mounted () {
+                axios
+                .get(this.createUrl())
+                .then(response => (this.info = response.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+            },
+            methods:{
+                firstPage: function(){
+                        this.page=1
+                        this.getdata()
+                    },
+                lastPage: function(){
+                    this.page=this.info.pages
+                    this.getdata()
+                },
+                prePage: function(){
+                    // this.page=this.page-1
+                    this.page=this.info.prePage
+                    this.getdata()
+                },
+                nextPage: function(){
+                    // this.page=this.page+1
+                    this.page=this.info.nextPage
+                    this.getdata()
+                },
+                reload: function(){
+                    this.page=1
+                    this.getdata()
+                },
+                createUrl: function(){
+                    var url = '/lagou/position/mongodb/avgsalaryby'+this.way+'?order='+this.salary+'&desc='+!this.desc+'&pageNum='+this.page+'&pageSize=10'
+                    return url
+                },
+                getdata:function (){
+                    if(this.page<=1){
+                        this.page=1;
+                    }
+                    axios
+                        .get(this.createUrl())
+                        .then(response => (this.info = response.data))
+                        .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
+                }
+            }
+        })
+    </script>
+</body>
+</html>

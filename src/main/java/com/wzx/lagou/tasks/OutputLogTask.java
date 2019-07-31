@@ -4,9 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.bcel.internal.generic.NEW;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.ReplaceOptions;
+import com.mongodb.client.result.UpdateResult;
 import com.wzx.lagou.common.AvgSalary;
 import com.wzx.lagou.common.RedisUtils;
 import com.wzx.lagou.config.MyConfig;
@@ -17,13 +18,12 @@ import com.wzx.lagou.service.CityService;
 import com.wzx.lagou.service.CompanyService;
 import com.wzx.lagou.service.PositionTypeService;
 import com.wzx.lagou.service.PositionsService;
-import javafx.scene.control.Slider;
 import ma.glasnost.orika.MapperFacade;
-import org.apache.tomcat.util.buf.Utf8Encoder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -33,7 +33,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
@@ -42,7 +41,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
@@ -68,13 +66,16 @@ public class OutputLogTask {
     private PositionsService positionsService;
 
     @Resource
+    private MongoTemplate mongoTemplate;
+
+    @Resource
     private MyConfig myConfig;
 
-//    @Scheduled(cron="40 3 2/5 * * ?")
-    @Scheduled(cron="0/10 * * * * ?")
+    @Scheduled(cron="40 19 0/5 * * ?")
+//    @Scheduled(cron="0/10 * * * * ?")
     private void outputLod() throws IOException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.println("现在是："+sdf.format(new Date()));
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //System.out.println("现在是："+sdf.format(new Date()));
         //redis操作
         //redisUtils.set("redis_key", new Date().toString());
         //redisUtils.delete("redis_key");
@@ -158,6 +159,8 @@ public class OutputLogTask {
 //        updateCompanyData();
         //======================计算公司平均工资================================================
 //        calcCompanyAvgSalary();
+        //======================company数据写入MongoDB================================================
+        //calcAvgSalaryToMogondb();
     }
 
     /**
@@ -521,6 +524,42 @@ public class OutputLogTask {
             company.setAvgSalaryMin(avgSalary.get("avgSalaryMin"));
             company.setAvgSalaryMax(avgSalary.get("avgSalaryMax"));
             Boolean status = companyService.updateCompany(company);
+            System.out.println(companyDto.getCompanyShortName()+"==>"+status);
+        }
+    }
+
+    private void calcAvgSalaryToMogondb(){
+        PageInfo pageInfo = companyService.selectAllCompany(1, 100);
+        List<TbCompanyDto> companylist = pageInfo.getList();
+        for (int i=2;i<=pageInfo.getPages();i++){
+            PageInfo pageInfo1 = companyService.selectAllCompany(i, 100);
+            companylist.addAll(pageInfo1.getList());
+        }
+        for (TbCompanyDto companyDto:companylist){
+            Map<String, Object> map = positionsService.selectAllPositionByCompany(companyDto.getCompanyId(),1, 100);
+            List<TbPositionsDto> positionDtoList = mapperFacade.mapAsList((List<TbPosition>)map.get("objList"),TbPositionsDto.class);
+            PageInfo pageInfo1 = (PageInfo) map.get("pageInfo");
+            if (pageInfo1.getPages()>1) {
+                for (int j = 2; j <= pageInfo1.getPages(); j++) {
+                    map = positionsService.selectAllPositionByCompany(companyDto.getCompanyId(), j, 100);
+                    positionDtoList.addAll(mapperFacade.mapAsList((List<TbPosition>)map.get("objList"),TbPositionsDto.class));
+                }
+            }
+            Map<String, Double> avgSalary = AvgSalary.getAvgSalary(positionDtoList);
+            Map<String, Object> modelMap = new HashMap<String, Object>();
+            modelMap.put("minSalary", avgSalary.get("avgSalaryMin"));
+            modelMap.put("maxSalary", avgSalary.get("avgSalaryMax"));
+            //写MongoDB
+            modelMap.put("company_name", companyDto.getCompanyShortName());
+            modelMap.put("company_id", companyDto.getCompanyId());
+            UpdateResult updateResult = mongoTemplate.getCollection("company").replaceOne(Filters.eq("company_id", modelMap.get("company_id").toString()), org.bson.Document.parse(JSON.toJSONString(modelMap)), new ReplaceOptions().upsert(true));
+            boolean status = (updateResult.getModifiedCount() > 0 || updateResult.getUpsertedId() != null);
+            //写MySQL
+//            TbCompany company = new TbCompany();
+//            company.setCompanyId(companyDto.getCompanyId());
+//            company.setAvgSalaryMin(avgSalary.get("avgSalaryMin"));
+//            company.setAvgSalaryMax(avgSalary.get("avgSalaryMax"));
+//            Boolean status = companyService.updateCompany(company);
             System.out.println(companyDto.getCompanyShortName()+"==>"+status);
         }
     }

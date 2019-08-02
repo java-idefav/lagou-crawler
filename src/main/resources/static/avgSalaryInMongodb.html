@@ -8,10 +8,29 @@
     <script src="js\vue.min.js"></script>
     <script src="js\axios.min.js"></script>
     <link type="text/css" rel="stylesheet" href="css\style.css"/>
-    <script type="text/javascript" src="https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/static/protocol/https/jquery/jquery-1.10.2.min_65682a2.js"></script>
+    <link type="text/css" rel="stylesheet" href="css\element.css"/>
+    <script type="text/javascript" src="js\jquery-1.9.1.min.js"></script>
+    
 </head>
 <body>
     <div id="dataList">
+        <!-- <el-button @click="visible = true">按钮</el-button> -->
+        <el-dialog :visible.sync="visible" v-bind:title="'【详细信息】' + (company != null?company.companyShortName:'null')" center>
+            <el-card class="box-card">
+                <div class="text item">
+                    <p v-if="company != null && company.companyId != null"><span>公司编号 : </span>{{company.companyId}}<br></p>
+                    <p v-if="company != null && company.companyShortName != null"><span>公司名称 : </span>{{company.companyShortName}}</p>
+                    <p v-if="company != null && company.companySize != null"><span>公司规模 : </span>{{company.companySize}}</p>
+                    <p v-if="company != null && company.city != null"><span>所在城市 : </span>{{company.city}}</p>
+                    <p v-if="company != null && company.avgSalaryMax != null"><span>平均工资(最高) : </span>{{company.avgSalaryMax}}K</p>
+                    <p v-if="company != null && company.avgSalaryMin != null"><span>平均工资(最低) : </span>{{company.avgSalaryMin}}K</p>
+                    <p v-if="company != null && company.industryField != null"><span>行业 : </span>{{company.industryField}}</p>
+                </div>
+            </el-card>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="visible = false">确 定</el-button>
+            </span>
+        </el-dialog>
         <div>
             <table>
                 <tr>
@@ -45,44 +64,52 @@
                         <td>{{list.avgSalaryMax}}K</td>
                     </template>
                     <template v-else>
-                        <td>{{list.company_name}}</td>
+                        <td>{{list.company_name}}<input style="float: right;" type="button" v-on:click="getCompany" value="详情" v-bind:title="[list.company_id]"/></td>
                         <td>{{list.minSalary}}K</td>
                         <td>{{list.maxSalary}}K</td>
                     </template>
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <a v-on:click="firstPage">首页</a>
-                        <a v-on:click="prePage">上一页</a>
-                        <a>第{{info.pageNum}}页/共{{info.pages}}页</a>
-                        <a v-on:click="nextPage">下一页</a>
-                        <a v-on:click="lastPage">尾页</a>
+                        <a class="page" v-on:click="firstPage">首页</a>
+                        <a class="page" v-on:click="prePage">上一页</a>
+                        <a class="page">第{{info.pageNum}}页/共{{info.pages}}页</a>
+                        <a class="page" v-on:click="nextPage">下一页</a>
+                        <a class="page" v-on:click="lastPage">尾页</a>
                     </td>
                 </tr>
             </table>
         </div>
     </div>
+    <script type="text/javascript" src="js\element.js"></script>
     <script>
         new Vue({
             el: '#dataList',
             data () {
                 return {
-                    way:'city',
+                    way:'company',
                     salary:'avg_salary_min',
                     info:'null',
                     page:1,
-                    desc:false
+                    desc:false,
+                    companyid:"",
+                    visible:false,
+                    company:null
                 }
             },
             mounted () {
-                axios
-                .get(this.createUrl())
-                .then(response => (this.info = response.data))
-                .catch(function (error) { // 请求失败处理
-                    console.log(error);
-                });
+                this.getdata()
+                this.pageStart_companyInfo()
             },
             methods:{
+                pageStart_companyInfo: function(){//初始化公司信息
+                    // axios
+                    //     .get("/lagou/mongodb/findOneCompany?companyId="+"34863")
+                    //     .then(response => (this.company = response.data))
+                    //     .catch(function (error) { // 请求失败处理
+                    //         console.log(error);
+                    //     });
+                },
                 firstPage: function(){
                         this.page=1
                         this.getdata()
@@ -119,6 +146,15 @@
                         .catch(function (error) { // 请求失败处理
                             console.log(error);
                         });
+                },
+                getCompany:function(event){
+                    axios
+                        .get("/lagou/mongodb/findOneCompany?companyId="+event.currentTarget.title)
+                        .then(response => (this.company = response.data))
+                        .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
+                    this.visible = true;
                 }
             }
         })

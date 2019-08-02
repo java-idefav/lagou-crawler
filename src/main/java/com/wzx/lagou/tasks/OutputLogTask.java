@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import com.mongodb.client.result.UpdateResult;
@@ -71,7 +73,7 @@ public class OutputLogTask {
     @Resource
     private MyConfig myConfig;
 
-    @Scheduled(cron="40 19 0/5 * * ?")
+    @Scheduled(cron="45 42 3/5 * * ?")
 //    @Scheduled(cron="0/10 * * * * ?")
     private void outputLod() throws IOException {
         //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -160,7 +162,7 @@ public class OutputLogTask {
         //======================计算公司平均工资================================================
 //        calcCompanyAvgSalary();
         //======================company数据写入MongoDB================================================
-        //calcAvgSalaryToMogondb();
+//        calcAvgSalaryToMogondb();
     }
 
     /**
@@ -528,6 +530,9 @@ public class OutputLogTask {
         }
     }
 
+    /**
+     * 向MongoDB写入公司平均工资和公司信息docoment
+     */
     private void calcAvgSalaryToMogondb(){
         PageInfo pageInfo = companyService.selectAllCompany(1, 100);
         List<TbCompanyDto> companylist = pageInfo.getList();
@@ -552,6 +557,9 @@ public class OutputLogTask {
             //写MongoDB
             modelMap.put("company_name", companyDto.getCompanyShortName());
             modelMap.put("company_id", companyDto.getCompanyId());
+            modelMap.put("company_info", companyDto);
+//            DBObject document = (DBObject) JSON.toJSON(companyDto);
+//            modelMap.put("company_info", document);
             UpdateResult updateResult = mongoTemplate.getCollection("company").replaceOne(Filters.eq("company_id", modelMap.get("company_id").toString()), org.bson.Document.parse(JSON.toJSONString(modelMap)), new ReplaceOptions().upsert(true));
             boolean status = (updateResult.getModifiedCount() > 0 || updateResult.getUpsertedId() != null);
             //写MySQL

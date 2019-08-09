@@ -3,7 +3,9 @@ package com.wzx.lagou.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageInfo;
 import com.wzx.lagou.common.RedisUtils;
+import com.wzx.lagou.model.dto.TbPositionsDto;
 import com.wzx.lagou.service.RedisCacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,10 +42,10 @@ public class RedisCacheServiceImpl implements RedisCacheService {
     }
 
     @Override
-    public Object redisRead(String key) throws IOException {
+    public PageInfo redisRead(String key) throws IOException {
         String s = redisUtils.get(key);
         if (s!=null) {
-            return mapper.readValue(s, Object.class);
+            return mapper.readValue(s, PageInfo.class);
         }else {
             return  null;
         }

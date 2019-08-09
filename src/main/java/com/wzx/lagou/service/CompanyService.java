@@ -11,6 +11,6 @@ public interface CompanyService {
     List<TbCompanyDto> selectCompanyByCompanyId(String companyId);
     PageInfo selectAllCompanyOnMongodb(Boolean desc,Integer pageNum,Integer pageSize);
     PageInfo selectAllCompany(Integer pageNum,Integer pageSize);
-    PageInfo selectCompanyDto(String order,Boolean desc,Integer pageNum,Integer pageSize);
+    PageInfo<TbCompanyDto> selectCompanyDto(String order,Boolean desc,Integer pageNum,Integer pageSize);
     Boolean updateCompany(TbCompany company);
 }

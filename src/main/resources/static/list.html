@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>列表</title>
-    <script src="js\vue.min.js"></script>
-    <script src="js\axios.min.js"></script>
-    <link type="text/css" rel="stylesheet" href="css\style.css"/>
+    <script src="js/vue.min.js"></script>
+    <script src="js/axios.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
     <script type="text/javascript" src="https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/static/protocol/https/jquery/jquery-1.10.2.min_65682a2.js"></script>
 </head>
 <body>
@@ -51,11 +51,11 @@
         </tr>
         <tr>
             <td colspan="8">
-                <a v-on:click="firstPage">首页</a>
-                <a v-on:click="prePage">上一页</a>
-                <a>第{{info.pageNum}}页/共{{info.pages}}页</a>
-                <a v-on:click="nextPage">下一页</a>
-                <a v-on:click="lastPage">尾页</a>
+                <a class="page" v-on:click="firstPage">首页</a>
+                <a class="page" v-on:click="prePage">上一页</a>
+                <a class="page">第{{info.pageNum}}页/共{{info.pages}}页</a>
+                <a class="page" v-on:click="nextPage">下一页</a>
+                <a class="page" v-on:click="lastPage">尾页</a>
             </td>
         </tr>
     </table>
@@ -80,6 +80,10 @@
                 .then(response => (this.info = response.data.pageInfo))
                 .catch(function (error) { // 请求失败处理
                     console.log(error);
+                    if (error.response.status == '401') {
+                        alert("没有权限!请先登录")
+                        window.location.href='/UserPage/login.html'
+                    }
                 });
                 },
             methods:{
@@ -127,6 +131,10 @@
                     .then(response => (this.info = response.data.pageInfo))
                     .catch(function (error) { // 请求失败处理
                         console.log(error);
+                        if (error.response.status == '401') {
+                            alert("没有权限!请先登录")
+                            window.location.href='/UserPage/login.html'
+                        }
                     });
                 }}
             })

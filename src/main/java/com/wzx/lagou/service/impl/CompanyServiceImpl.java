@@ -90,7 +90,7 @@ public class CompanyServiceImpl implements CompanyService{
         return pageInfo;
     }
 
-    public PageInfo selectCompanyDto(String order, Boolean desc, Integer pageNum, Integer pageSize) {
+    public PageInfo<TbCompanyDto> selectCompanyDto(String order, Boolean desc, Integer pageNum, Integer pageSize) {
         if (desc){
             order = order+" desc";
         }

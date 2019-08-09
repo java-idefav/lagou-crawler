@@ -11,6 +11,7 @@ import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Console;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,15 +24,21 @@ public class CityServiceImpl implements CityService {
     @Autowired
     private MapperFacade mapperFacade;
 
-    public Map<String,Object> selectCityDto(Integer pageNum,Integer pageSize) {
+    public PageInfo<TbCityDto> selectCityDto(Integer pageNum,Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         TbCityExample example = new TbCityExample();
-        List<TbCityDto> cities = mapperFacade.mapAsList(cityMapper.selectByExample(example), TbCityDto.class);
-        PageInfo pageInfo = new PageInfo(cities);
-        Map<String,Object> map = new HashMap<String, Object>();
-        map.put("pageInfo", pageInfo);
-        map.put("objList", cities);
-        return map;
+        try {
+            List<TbCity> cities = cityMapper.selectByExample(example);
+            PageInfo pageInfo = new PageInfo(cities);
+            pageInfo.setList(mapperFacade.mapAsList(cityMapper.selectByExample(example), TbCityDto.class));
+//        Map<String,Object> map = new HashMap<String, Object>();
+//        map.put("pageInfo", pageInfo);
+//        map.put("objList", cities);
+            return pageInfo;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     public List<TbCityDto> selectCityDto() {
@@ -41,7 +48,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public PageInfo selectCityDto(String order,Boolean desc,Integer pageNum,Integer pageSize) {
+    public PageInfo<TbCityDto> selectCityDto(String order,Boolean desc,Integer pageNum,Integer pageSize) {
         if (desc){
             order = order + " desc";
         }

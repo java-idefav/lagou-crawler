@@ -8,8 +8,8 @@ import java.util.Map;
 
 public interface CityService {
     List<TbCityDto> selectCityDto();
-    PageInfo selectCityDto(String order,Boolean desc,Integer pageNum,Integer pageSize);
-    Map<String,Object> selectCityDto(Integer pageNum, Integer pageSize);
+    PageInfo<TbCityDto> selectCityDto(String order,Boolean desc,Integer pageNum,Integer pageSize);
+    PageInfo<TbCityDto> selectCityDto(Integer pageNum, Integer pageSize);
     Boolean insertCity(TbCityDto cityDto);
     Boolean updateCity(TbCityDto cityDto);
     TbCityDto selectCityDtoByCityName(String cityName);

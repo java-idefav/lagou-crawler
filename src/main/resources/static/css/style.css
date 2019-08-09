@@ -1,9 +1,9 @@
-table#tblist {
+#tblist,#list {
     border-collapse:collapse;
     border-right: 1px solid #804040;
     border-bottom: 1px solid #804040;
 }
-#tblist td {
+#tblist td,#list td {
     padding: 2px 10px;
     border-left: 1px solid #804040;
     border-top: 1px solid #804040;

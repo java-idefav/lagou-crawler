@@ -73,7 +73,7 @@ public class OutputLogTask {
     @Resource
     private MyConfig myConfig;
 
-    @Scheduled(cron="45 42 3/5 * * ?")
+    @Scheduled(cron="45 42 11/18 * * ?")
 //    @Scheduled(cron="0/10 * * * * ?")
     private void outputLod() throws IOException {
         //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -456,14 +456,14 @@ public class OutputLogTask {
     private void updataAvgSalaryByCity(){
         List<TbCityDto> cityDtos = cityService.selectCityDto();
         for (TbCityDto cityDto:cityDtos){
-            Map<String, Object> map = positionsService.selectAllPositionByCity(cityDto.getCityName(),1, 100);
-            PageInfo pageInfo = (PageInfo) map.get("pageInfo");
+            PageInfo<TbPositionsDto> pageInfo = positionsService.selectAllPositionByCity(cityDto.getCityName(), 1, 100);
+//            PageInfo pageInfo = (PageInfo) map.get("pageInfo");
             List<TbPositionsDto> list = pageInfo.getList();
             int pages = pageInfo.getPages();
             if (pages>1) {
                 for (int i = 2;i<=pages;i++){
-                    Map<String, Object> map1 = positionsService.selectAllPositionByCity(cityDto.getCityName(),i, 100);
-                    PageInfo pageInfo1 = (PageInfo) map1.get("pageInfo");
+                    PageInfo<TbPositionsDto> pageInfo1 = positionsService.selectAllPositionByCity(cityDto.getCityName(),i, 100);
+//                    PageInfo pageInfo1 = (PageInfo) map1.get("pageInfo");pageInfo
                     List<TbPositionsDto> list1 = pageInfo1.getList();
                     list.addAll(list1);
                 }
@@ -511,13 +511,13 @@ public class OutputLogTask {
             companylist.addAll(pageInfo1.getList());
         }
         for (TbCompanyDto companyDto:companylist){
-            Map<String, Object> map = positionsService.selectAllPositionByCompany(companyDto.getCompanyId(),1, 100);
-            List<TbPositionsDto> positionDtoList = mapperFacade.mapAsList((List<TbPosition>)map.get("objList"),TbPositionsDto.class);
-            PageInfo pageInfo1 = (PageInfo) map.get("pageInfo");
+            PageInfo<TbPositionsDto> pageInfo1 = positionsService.selectAllPositionByCompany(companyDto.getCompanyId(), 1, 100);
+            List<TbPositionsDto> positionDtoList = pageInfo1.getList();
+//            PageInfo pageInfo1 = (PageInfo) map.get("pageInfo");
             if (pageInfo1.getPages()>1) {
                 for (int j = 2; j <= pageInfo1.getPages(); j++) {
-                    map = positionsService.selectAllPositionByCompany(companyDto.getCompanyId(), j, 100);
-                    positionDtoList.addAll(mapperFacade.mapAsList((List<TbPosition>)map.get("objList"),TbPositionsDto.class));
+                    pageInfo1 = positionsService.selectAllPositionByCompany(companyDto.getCompanyId(), j, 100);
+                    positionDtoList.addAll(pageInfo1.getList());
                 }
             }
             Map<String, Double> avgSalary = AvgSalary.getAvgSalary(positionDtoList);
@@ -541,13 +541,13 @@ public class OutputLogTask {
             companylist.addAll(pageInfo1.getList());
         }
         for (TbCompanyDto companyDto:companylist){
-            Map<String, Object> map = positionsService.selectAllPositionByCompany(companyDto.getCompanyId(),1, 100);
-            List<TbPositionsDto> positionDtoList = mapperFacade.mapAsList((List<TbPosition>)map.get("objList"),TbPositionsDto.class);
-            PageInfo pageInfo1 = (PageInfo) map.get("pageInfo");
+            PageInfo<TbPositionsDto> pageInfo1 = positionsService.selectAllPositionByCompany(companyDto.getCompanyId(), 1, 100);
+            List<TbPositionsDto> positionDtoList = pageInfo1.getList();
+//            PageInfo pageInfo1 = (PageInfo) map.get("pageInfo");
             if (pageInfo1.getPages()>1) {
                 for (int j = 2; j <= pageInfo1.getPages(); j++) {
-                    map = positionsService.selectAllPositionByCompany(companyDto.getCompanyId(), j, 100);
-                    positionDtoList.addAll(mapperFacade.mapAsList((List<TbPosition>)map.get("objList"),TbPositionsDto.class));
+                    pageInfo1 = positionsService.selectAllPositionByCompany(companyDto.getCompanyId(), j, 100);
+                    positionDtoList.addAll(pageInfo1.getList());
                 }
             }
             Map<String, Double> avgSalary = AvgSalary.getAvgSalary(positionDtoList);

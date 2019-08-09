@@ -145,6 +145,10 @@
                         .then(response => (this.info = response.data))
                         .catch(function (error) { // 请求失败处理
                             console.log(error);
+                            if (error.response.status == '401') {
+                                alert("没有权限!请先登录")
+                                window.location.href='/UserPage/login.html'
+                            }
                         });
                 },
                 getCompany:function(event){
@@ -153,6 +157,10 @@
                         .then(response => (this.company = response.data))
                         .catch(function (error) { // 请求失败处理
                             console.log(error);
+                            if (error.response.status == '401') {
+                                alert("没有权限!请先登录")
+                                window.location.href='/UserPage/login.html'
+                            }
                         });
                     this.visible = true;
                 }

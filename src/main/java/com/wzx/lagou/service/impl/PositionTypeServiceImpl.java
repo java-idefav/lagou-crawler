@@ -30,15 +30,21 @@ public class PositionTypeServiceImpl implements PositionTypeService {
         return mapperFacade.mapAsList(positionTypes,TbPositionTypeDto.class );
     }
 
-    public Map<String, Object> selectPositionTypes(Integer pageNum, Integer pageSize) {
+    public PageInfo<TbPositionTypeDto> selectPositionTypes(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         TbPositionTypeExample example = new TbPositionTypeExample();
-        List<TbPositionTypeDto> positionTypes = mapperFacade.mapAsList(positionTypeMapper.selectByExample(example), TbPositionTypeDto.class);
-        PageInfo pageInfo = new PageInfo(positionTypes);
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("pageInfo", pageInfo);
-        map.put("objList", positionTypes);
-        return map;
+        try {
+            List<TbPositionType> positionTypeList = positionTypeMapper.selectByExample(example);
+            PageInfo pageInfo = new PageInfo(positionTypeList);
+            pageInfo.setList(mapperFacade.mapAsList(positionTypeMapper.selectByExample(example), TbPositionTypeDto.class));
+//        Map<String, Object> map = new HashMap<String, Object>();
+//        map.put("pageInfo", pageInfo);
+//        map.put("objList", positionTypes);
+            return pageInfo;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     public Boolean insertPositionType(TbPositionTypeDto positionTypeDto) {
@@ -77,7 +83,12 @@ public class PositionTypeServiceImpl implements PositionTypeService {
     }
 
     public Integer countPositionTypeNum() {
-        TbPositionTypeExample example = new TbPositionTypeExample();
-        return (int)positionTypeMapper.countByExample(example);
+        try {
+            TbPositionTypeExample example = new TbPositionTypeExample();
+            return (int) positionTypeMapper.countByExample(example);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return -1;
+        }
     }
 }

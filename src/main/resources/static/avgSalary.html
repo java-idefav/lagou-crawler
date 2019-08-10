@@ -54,7 +54,7 @@
                     <td colspan="3">
                         <a v-on:click="firstPage">首页</a>
                         <a v-on:click="prePage">上一页</a>
-                        <a>第{{info.pageNum}}页/共{{info.pages}}页</a>
+                        <a>第{{info.data.pageNum}}页/共{{info.data.pages}}页</a>
                         <a v-on:click="nextPage">下一页</a>
                         <a v-on:click="lastPage">尾页</a>
                     </td>
@@ -92,17 +92,17 @@
                         this.getdata()
                     },
                 lastPage: function(){
-                    this.page=this.info.pages
+                    this.page=this.info.data.pages
                     this.getdata()
                 },
                 prePage: function(){
                     // this.page=this.page-1
-                    this.page=this.info.prePage
+                    this.page=this.info.data.prePage
                     this.getdata()
                 },
                 nextPage: function(){
                     // this.page=this.page+1
-                    this.page=this.info.nextPage
+                    this.page=this.info.data.nextPage
                     this.getdata()
                 },
                 reload: function(){

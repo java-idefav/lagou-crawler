@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.wzx.lagou.common.Login;
 import com.wzx.lagou.common.Response;
 import com.wzx.lagou.common.ResponseFactory;
+import com.wzx.lagou.model.MongoDbCompanyPojo;
 import com.wzx.lagou.model.dto.TbCityDto;
 import com.wzx.lagou.model.dto.TbCompanyDto;
 import com.wzx.lagou.model.dto.TbPositionTypeDto;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -108,13 +110,27 @@ public class PositionController {
     }
 
     @RequestMapping("/ishave")
-    public Boolean getPositionByEducation(String positionsId){
-        return positionsService.isHavePosition(positionsId);
+    public Response<Boolean> getPositionByEducation(String positionsId){
+        try {
+            Boolean isHavePosition = positionsService.isHavePosition(positionsId);
+            return ResponseFactory.success(isHavePosition);
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseFactory.fail("数据请求失败!");
+        }
     }
 
     @RequestMapping("/count")
-    public Integer countPositionNum(){
-        return positionsService.countPositionNum();
+    public Response<Integer> countPositionNum(){
+        Integer count = positionsService.countPositionNum();
+        if (count<0){
+            HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseFactory.fail("数据请求失败!");
+        }
+        return ResponseFactory.success(count);
     }
 
     @RequestMapping("/avgsalarybycity")
@@ -143,8 +159,16 @@ public class PositionController {
 
     @RequestMapping("/mongodb/avgsalarybycompany")
     @Login
-    public PageInfo sortAvgSalaryMongodbByCompany(String order,Boolean desc,Integer pageNum,Integer pageSize){
-        return companyService.selectAllCompanyOnMongodb(desc, pageNum, pageSize);
+    public Response<PageInfo<MongoDbCompanyPojo>> sortAvgSalaryMongodbByCompany(String order, Boolean desc, Integer pageNum, Integer pageSize){
+        try {
+            PageInfo<MongoDbCompanyPojo> pageInfo = companyService.selectAllCompanyOnMongodb(desc, pageNum, pageSize);
+            return ResponseFactory.success(pageInfo);
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
+            HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseFactory.fail("请求数据错误!");
+        }
     }
 
     @GetMapping("/query")

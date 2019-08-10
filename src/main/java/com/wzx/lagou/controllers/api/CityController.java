@@ -55,13 +55,29 @@ public class CityController extends BaseController{
     }
 
     @RequestMapping("/ishave")
-    public Boolean isHaveCity(String cityName){
-        return cityService.isHaveCity(cityName);
+    public Response<Boolean> isHaveCity(String cityName){
+        try {
+            Boolean isHaveCity = cityService.isHaveCity(cityName);
+            return ResponseFactory.success(isHaveCity);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseFactory.fail("发生未知错误!");
+        }
     }
 
     @RequestMapping("/citynum")
-    public Integer getCityNum(){
-        return cityService.countCityNum();
+    public Response<Integer> getCityNum(){
+        try {
+            Integer countCity = cityService.countCityNum();
+            return ResponseFactory.success(countCity);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseFactory.fail("发生未知错误!");
+        }
     }
 
 }

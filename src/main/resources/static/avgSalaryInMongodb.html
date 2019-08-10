@@ -19,7 +19,7 @@
             <el-card class="box-card">
                 <div class="text item">
                     <p v-if="company != null && company.companyId != null"><span>公司编号 : </span>{{company.companyId}}<br></p>
-                    <p v-if="company != null && company.companyShortName != null"><span>公司名称 : </span>{{company.companyShortName}}</p>
+                    <p v-if="company != null && company.company_Name != null"><span>公司名称 : </span>{{company.company_Name}}</p>
                     <p v-if="company != null && company.companySize != null"><span>公司规模 : </span>{{company.companySize}}</p>
                     <p v-if="company != null && company.city != null"><span>所在城市 : </span>{{company.city}}</p>
                     <p v-if="company != null && company.avgSalaryMax != null"><span>平均工资(最高) : </span>{{company.avgSalaryMax}}K</p>
@@ -142,7 +142,7 @@
                     }
                     axios
                         .get(this.createUrl())
-                        .then(response => (this.info = response.data))
+                        .then(response => (this.info = response.data.data))
                         .catch(function (error) { // 请求失败处理
                             console.log(error);
                             if (error.response.status == '401') {
@@ -154,7 +154,7 @@
                 getCompany:function(event){
                     axios
                         .get("/lagou/mongodb/findOneCompany?companyId="+event.currentTarget.title)
-                        .then(response => (this.company = response.data))
+                        .then(response => (this.company = response.data.data.company_info))
                         .catch(function (error) { // 请求失败处理
                             console.log(error);
                             if (error.response.status == '401') {

@@ -50,15 +50,17 @@
                         .post("/lagou/user/loginverify",this.form)
                         .then(function (response) {
                             console.log(response);
-                            if(response.data){
+                            if(response.data.data){
                                 alert('登录成功!')
                                 window.location.href='/avgSalary.html'
                             }else{
                                 alert('登录失败!')
+                                
                             }
                         })
                         .catch(function (error) {
                             console.log(error);
+                            alert(error.response.data.message);
                         });
                     },
                     resetForm() {

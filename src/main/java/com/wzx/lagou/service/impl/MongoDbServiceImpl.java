@@ -1,5 +1,6 @@
 package com.wzx.lagou.service.impl;
 
+import com.wzx.lagou.model.MongoDbCompanyPojo;
 import com.wzx.lagou.service.MongoDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -19,9 +20,9 @@ public class MongoDbServiceImpl implements MongoDbService {
     private MongoTemplate mongoTemplate;
 
     @Override
-    public Map<String,Object> findOneCompany(String companyId) {
+    public MongoDbCompanyPojo findOneCompany(String companyId) {
         Query query = new Query(Criteria.where("company_info.companyId").is(companyId));
-        Map<String,Object> company = mongoTemplate.findOne(query, Map.class, "company");
+        MongoDbCompanyPojo company = mongoTemplate.findOne(query, MongoDbCompanyPojo.class, "company");
         return company;
     }
 }

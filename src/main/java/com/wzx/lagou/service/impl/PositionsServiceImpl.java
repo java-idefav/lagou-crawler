@@ -84,8 +84,13 @@ public class PositionsServiceImpl implements PositionsService{
     }
 
     public Integer countPositionNum() {
-        TbPositionsExample example = new TbPositionsExample();
-        return (int)positionsMapper.countByExample(example);
+        try {
+            TbPositionsExample example = new TbPositionsExample();
+            return (int)positionsMapper.countByExample(example);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return -1;
+        }
     }
 
     //@Cacheable(value = "all",keyGenerator = "keyGenerator")

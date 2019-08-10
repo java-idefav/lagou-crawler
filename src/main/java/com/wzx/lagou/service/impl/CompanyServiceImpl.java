@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mongodb.client.FindIterable;
+import com.wzx.lagou.model.MongoDbCompanyPojo;
 import com.wzx.lagou.model.auto.TbCompany;
 import com.wzx.lagou.model.auto.TbCompanyExample;
 import com.wzx.lagou.model.dto.TbCompanyDto;
@@ -47,7 +48,7 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
 
-    public PageInfo selectAllCompanyOnMongodb(Boolean desc,Integer pageNum, Integer pageSize) {
+    public PageInfo<MongoDbCompanyPojo> selectAllCompanyOnMongodb(Boolean desc, Integer pageNum, Integer pageSize) {
 //        Aggregation agg = Aggregation.newAggregation(
 //                //选择属性
 //                Aggregation.project("company_name","minSalary","maxSalary"),

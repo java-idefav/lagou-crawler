@@ -77,7 +77,7 @@
                 // }
                 axios
                 .get(this.createUrl())
-                .then(response => (this.info = response.data.pageInfo))
+                .then(response => (this.info = response.data.data))
                 .catch(function (error) { // 请求失败处理
                     console.log(error);
                     if (error.response.status == '401') {
@@ -128,7 +128,7 @@
                  }
                 axios
                     .get(this.createUrl())
-                    .then(response => (this.info = response.data.pageInfo))
+                    .then(response => (this.info = response.data.data))
                     .catch(function (error) { // 请求失败处理
                         console.log(error);
                         if (error.response.status == '401') {

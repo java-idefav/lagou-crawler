@@ -60,10 +60,7 @@ public class UserController {
         if (status){
             session.setAttribute("user", userDto);
         }
-        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
-        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        return ResponseFactory.fail("出现错误,验证失败!");
-        //return ResponseFactory.success(status);
+        return ResponseFactory.success(status);
     }
 
 //    @RequestMapping("/verify")

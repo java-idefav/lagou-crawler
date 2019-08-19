@@ -82,7 +82,7 @@
                     console.log(error);
                     if (error.response.status == '401') {
                         alert("没有权限!请先登录")
-                        window.location.href='/UserPage/login.html'
+                        window.location.href='http://sso.bluesky.com:8080/UserPage/login.html'
                     }
                 });
             },
@@ -124,7 +124,7 @@
                             console.log(error);
                             if (error.response.status == '401') {
                                 alert("没有权限!请先登录")
-                                window.location.href='/UserPage/login.html'
+                                window.location.href='http://sso.bluesky.com:8080/UserPage/login.html'
                             }
                         });
                 }

@@ -46,6 +46,7 @@ public class PositionsServiceImpl implements PositionsService{
         try {
             PageInfo pageInfo = redisCacheService.redisRead("positions:"+pageNum+"_"+pageSize);
             if (pageInfo!=null) {
+                System.out.println("Redis缓存...........");
                 return pageInfo;
             }
         } catch (IOException e) {
@@ -130,6 +131,7 @@ public class PositionsServiceImpl implements PositionsService{
         try {
             List<TbPositions> positionList = positionsMapper.selectByExample(example);
             PageInfo pageInfo = new PageInfo(positionList);
+            pageInfo.setList(mapperFacade.mapAsList(positionList, TbPositionsDto.class));
 //        Map<String,Object> map = new HashMap<String, Object>();
 //        map.put("pageInfo", pageInfo);
 //        map.put("objList", positionList);

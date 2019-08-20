@@ -4,8 +4,10 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
-    password: 123456
-    url: jdbc:mysql://localhost:3306/db_lagou?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+#    password: 123456
+    password: 111111
+#    url: jdbc:mysql://localhost:3306/db_lagou?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://192.168.0.105:31144/db_lagou?useSSL=false&useUnicode=true&characterEncoding=UTF-8
   redis:
     database: 0
 #    host: 192.168.213.128
@@ -18,13 +20,13 @@ spring:
         max-wait: 3000ms
         max-idle: 8
         min-idle: 2
-    timeout: 3000ms
+#    timeout: 3000ms
   resources:
     static-locations: classpath:/static/
   data:
     mongodb:
 #      uri: mongodb://root:111111@192.168.0.105:32222/test?authMechanism=SCRAM-SHA-256
-      uri: mongodb://root:111111@192.168.0.105:32222/test?authMechanism=SCRAM-SHA-256&authSource=admin
+      uri: mongodb://root:111111@192.168.0.105:32222/db_lagou?authMechanism=SCRAM-SHA-256&authSource=admin
 #      authentication-database: admin
 #      username: root
 #      password: 111111

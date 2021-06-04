@@ -34,7 +34,7 @@
         <orika-core.version>1.5.4</orika-core.version>
         <spring-boot-starter-data-redis.version>2.0.0.RELEASE</spring-boot-starter-data-redis.version>
         <fastjson.version>1.2.58</fastjson.version>
-        <httpclient.version>4.5.9</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
         <jsoup.version>1.12.1</jsoup.version>
         <pagehelper-spring-boot-starter.version>1.2.12</pagehelper-spring-boot-starter.version>
         <spring-boot-starter-test.version>2.1.4.RELEASE</spring-boot-starter-test.version>

@@ -28,7 +28,7 @@
 
     <properties>
         <mybatis-spring-boot-starter-version>2.0.0</mybatis-spring-boot-starter-version>
-        <mysql-connector-java.version>5.1.47</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
         <orika.version>1.5.4</orika.version>
         <lombok.version>1.18.6</lombok.version>
         <orika-core.version>1.5.4</orika-core.version>
